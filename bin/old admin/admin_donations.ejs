@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/admin_donations.css">
+    <title>Admin Givings</title>
+    <link rel="icon" href="images1/logo1.png" type="image/x-icon">
+    <link rel="shortcut icon" href="images1/logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+
+<body>
+    <div class="side-menu">
+        <div class="brand-name">
+            <h1> San Roque</h1>
+        </div>
+        <ul>
+            <li id="document" onclick="navigateTo('/document')">
+                <img src="admin_img/reading-book (1).png" alt="">&nbsp;<span>Document</span>
+            </li>
+            <li id="giving" class="active_menu" onclick="navigateTo('/toGiving')">
+                <img src="admin_img/reading-book (1).png" alt="">&nbsp;<span>Giving/Tithes</span>
+            </li>
+            <li id="schedule" onclick="navigateTo('/toAdminSchedule')">
+                <img src="admin_img/teacher2.png" alt="">&nbsp;<span>Schedules</span>
+            </li>
+            <li id="events" onclick="navigateTo('/toEvents')">
+                <img src="admin_img/school.png" alt="">&nbsp;<span>Events</span>
+            </li>
+            <li id="notifications" onclick="navigateTo('/toNotifications')">
+                <img src="admin_img/payment.png" alt="">&nbsp;<span>Notification</span>
+            </li>
+            <li id="help" onclick="navigateTo('/toHelp')">
+                <img src="admin_img/help-web-button.png" alt="">&nbsp;<span>Help</span>
+            </li>
+            <li id="settings" onclick="navigateTo('/toSettings')">
+                <img src="admin_img/settings.png" alt="">&nbsp;<span>Settings</span>
+            </li>
+            <li id="settings" onclick="confirmLogout()">
+                <img src="admin_img/settings.png" alt="">&nbsp;<span>Logout</span>
+            </li>
+        </ul>
+    </div>
+    <div class="container">
+        <div class="header">
+            <div class="nav">
+                <div class="search">
+                    <input type="text" placeholder="Search..">
+                    <button type="submit"><img src="admin_img/search.png" alt=""></button>
+                </div>
+                <div class="user">
+                    <a href="#" class="btn">Add New</a>
+                    <img src="admin_img/notifications.png" alt="">
+                    <div class="img-case">
+                        <a href=""><img src="admin_img/user.png" alt=""><h1 class="username">EMAIL: <%= userEmail %></h1></a>
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="cards">
+               
+            </div>
+
+
+            
+            <div class="content-2">
+                <div class="recent-payments">
+                    <div class="title">
+                        <h2>Recent Donations</h2>
+                        <a href="#" class="btn">View All</a>
+                    </div>
+                    <table id="myTable">
+                        <tr>
+                            
+                            <!-- <th>Profile</th> -->
+                            <th class="th_border">Amount</th>
+                            <th class="th_border">Name</th> 
+                            <th class="th_border">Email</th>       
+                            <th class="th_border">Donation Date</th>
+                            <th class="th_border">Transaction Code</th>
+                            <th class="th_border">Status</th>
+                            <th class="th_border">Action</th>
+                            
+                        </tr>
+                        <tbody  id="tableBody">
+                            <% users.forEach(function(user) { %>
+                                <tr onclick="editUser('<%= user.amount %>', '<%= user.name %>', '<%= user.email %>', '<%= user.donation_date %>')">
+                                  <!-- <td><%= user.id %></td> -->
+                                  <td>P <%= user.amount %></td>
+                                  <td>  <%= user.name %></td>
+                                  <td>  <%= user.email %></td>
+                                  <td>  <%= user.donation_date %></td>
+                                  <td>  <%= user.reference_number%></td>
+                                  <td>  <%= user.confirmation_status %></td>
+                                  
+                                  <td class="px-4 py-3">
+                                    <div class="flex items-center space-x-4 text-sm">
+                                      <!-- Edit button -->
+                                      <button class="rounded-md p-2 transition duration-300 transform hover:scale-105 focus:outline-none focus:shadow-outline-purple" aria-label="Edit" onclick="editUser('<%= user.amount %>', '<%= user.name %>', '<%= user.email %>', '<%= user.donation_date %>')">
+                                        <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                          <!-- Your SVG path for edit icon -->
+                                        </svg>
+                                      </button>
+                            
+                                      <!-- Delete button -->
+                                      <button class="rounded-md p-2 transition duration-300 transform hover:scale-105 focus:outline-none focus:shadow-outline-red" aria-label="Delete" onclick="showDeleteConfirmation('<%= user.id %>')">
+                                        <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                          <!-- Your SVG path for delete icon -->
+                                        </svg>
+                                      </button>
+                                    </div>
+                                  </td>
+                                </tr>
+                              <% }); %>
+                
+                          </tbody>
+                    </table>
+                </div>
+                <% donations.forEach(function(donation) { %>
+                        <form class="new-students" style="display: none;" id="editForm" action="/updateDonation" method="post">
+                            <div class="title">
+                                <h2>EDIT USER</h2>
+                            </div>
+                            <label for="">Amount: </label>
+                            <input type="text" name="amount" id="editNewAmount" >
+                            <label for="">Fullname: </label>
+                            <input type="text" name="fullname" id="editNewFullname" placeholder="New Username">
+                            <label for="">Email: </label>
+                            <input type="text" name="email" id="editNewEmail" placeholder="New Password">
+                            <label for="">Donation Date(Not Editable): </label>
+                            <input type="text" name="contact_number" id="editNewContact" placeholder="+63964839384" readonly>
+                            
+                            <label>Status:</label>
+                                <input type="radio" id="confirmed" name="role" value="confirmed">
+                                <label for="confirmed">Confirmed</label>
+                                <input type="radio" id="unconfirmed" name="role" value="unconfirmed">
+                                <label for="unconfirmed">Unconfirmed</label>      
+                                                 
+                            <!-- <button type="submit" id="updateBtn" onclick="confirmUpdate()" class="btn_update">Update User</button> -->
+                            <button class="check-button" onclick="confirmDonation('<%= donation.donation_id %>')"><i class="fa fa-check" aria-hidden="true"></i></button>
+                            <button type="button" onclick="cancelEdit()" class="btn_cancel">Cancel</button>
+                        </form>
+                 <% }); %>                
+                                      
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+     function confirmDonation(donationId) {
+    const confirmation = confirm('Are you sure you want to confirm this donation?');
+    
+    if (confirmation) {
+        fetch(`/confirmDonation/${donationId}`, {
+            method: 'PUT', // Assuming you use PUT for update, adjust method if needed
+        })
+        .then(response => {
+            if (response.ok) {
+                // Update the UI or perform any necessary actions upon successful update
+                console.log('Donation confirmed!');
+            } else {
+                console.error('Failed to confirm donation');
+            }
+        })
+        .catch(error => {
+            console.error('Error confirming donation:', error);
+        });
+    } else {
+        console.log('Donation confirmation cancelled.');
+    }
+}
+
+
+    function confirmUpdate() {
+        // Retrieve form data
+        const amount = document.getElementById('editNewAmount').value;
+        const fullname = document.getElementById('editNewFullname').value;
+        const email = document.getElementById('editNewEmail').value;
+        const contactNumber = document.getElementById('editNewContact').value;
+        const status = document.querySelector('input[name="role"]:checked').value;
+
+        // Prepare data object to be sent
+        const data = {
+            amount: amount,
+            fullname: fullname,
+            email: email,
+            contact_number: contactNumber,
+            role: status
+        };
+
+        // Send a POST request to Node.js server using Axios
+        axios.post('/updateDonation', data)
+            .then(response => {
+                // Handle successful response from the server
+                console.log(response.data); // Log or handle the response as needed
+            })
+            .catch(error => {
+                // Handle errors
+                console.error('There was an error!', error);
+            });
+    }
+
+    // Function to cancel the edit (if needed)
+    function cancelEdit() {
+        // Add cancel logic here
+    }
+</script>
+<script>
+  
+function editUser(id, fullname, email, contact_number, role) {
+    document.getElementById('editNewAmount').value = id;
+    document.getElementById('editNewFullname').value = fullname;
+    document.getElementById('editNewEmail').value = email;
+    document.getElementById('editNewContact').value = contact_number;
+    document.getElementById('editNewRole').value = role;
+}
+function showEditForm(rowId) {
+    var editForm = document.getElementById("editForm");
+    editForm.style.display = "block";
+   
+    // document.addEventListener("click", handleOutsideClick);
+}
+
+function cancelEdit() {
+    var editForm = document.getElementById("editForm");
+    editForm.style.display = "none";
+ 
+    document.removeEventListener("click", handleOutsideClick);
+}
+
+function handleOutsideClick(event) {
+    var editForm = document.getElementById("editForm");
+    var targetElement = event.target;
+    
+    if (!editForm.contains(targetElement)) {
+        editForm.style.display = "none";
+        document.removeEventListener("click", handleOutsideClick);
+    }
+}
+
+
+function deleteRequest(donationId) {
+    const confirmation = confirm('Are you sure you want to delete this donation?');
+
+    if (confirmation) {
+        fetch(`/delete_donation/donation/${donationId}`, {
+            method: 'DELETE',
+        })
+        .then(response => {
+            if (response.ok) {
+                location.reload(); // Reload the page after deletion
+            } else {
+                console.error('Error deleting donation');
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting donation:', error);
+        });
+    } else {
+        console.log('Deletion canceled');
+    }
+}
+
+
+
+
+ 
+</script>
+<script  src="js/routes.js"></script>
+
+</html>
+
+</html>

@@ -1,0 +1,485 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+}
+
+a {
+    text-decoration: none;
+}
+
+li {
+    list-style: none;
+}
+a{
+    list-style: none;
+    color: black;
+}
+
+h1,
+h2 {
+    font-size: 30px;
+    color: #444;
+}
+
+h3 {
+    color: #999;
+}
+
+.btn {
+    background: #00a8fa;
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+}
+
+.btn:hover {
+    color: #00a8fa;
+    background: white;
+    padding: 3px 8px;
+    border: 2px solid #00a8fa;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 15px 10px;
+    border-bottom: 2px solid #999;
+}
+
+table {
+    padding: 40px;
+}
+
+th,
+td {
+    text-align: left;
+    padding: 28px;
+}
+
+.side-menu {
+    position: fixed;
+    background:#00a8fa;
+    width: 20vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+i.fa.fa-arrow-right {
+    color: #00a8fa;
+    font-size: 24px; 
+    margin-top: 50px; 
+    margin-left: 10px;
+}
+.side-menu .active_menu {
+    background: white;
+    color:#00a8fa;
+}
+
+.side-menu .brand-name {
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.side-menu li {
+    font-size: 37px;
+    padding: 20px 40px;
+    color: white;
+    display: flex;
+    align-items: center;
+}
+.side-menu li a { 
+    padding: 0;
+}
+
+.side-menu li:hover {
+    background: white;
+    color:#00a8fa;
+}
+.side-menu li a:hover {
+    color:#00a8fa;
+}
+
+.container {
+    position: absolute;
+    right: 0;
+    width: 80vw;
+    height: 100vh;
+    background: #f1f1f1;
+}
+
+.container .header {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 80vw;
+    height: 10vh;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.container .header .nav {
+    width: 80%;
+    display: flex;
+    align-items: center;
+}
+
+.container .header .nav .search {
+    flex: 3;
+    display: flex;
+    justify-content: center;
+}
+
+.container .header .nav .search input[type=text] {
+    font-size: 20px;
+    border: none;
+    background: #f1f1f1;
+    padding: 10px;
+    width: 50%;
+}
+
+.container .header .nav .search button {
+    width: 50px;
+    height: 50px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container .header .nav .search button img {
+   
+    width: 50px;
+    height: 50px;
+   
+}
+
+.container .header .nav .user {
+    font-size: 30px;
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.container .header .nav .user img {
+    width: 50px;
+    height: 50px;
+}
+
+.container .header .nav .user .img-case {
+    position: relative;
+    width: 50px;
+    height: 50px;
+}
+
+.container .header .nav .user .img-case img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 130%;
+    height: 130%;
+}
+
+.container .content {
+    position: relative;
+    margin-top: 10vh;
+    min-height: 90vh;
+    background: #f1f1f1;
+}
+
+ 
+/* ---------END OF HEADER--------- */
+
+.container .content .cards {
+    font-size: 25px;
+    padding: 40px 140px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.container .content .cards .card {
+    width: 330px;
+    height: 200px;
+    background: white;
+    margin: 20px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.container .content .cards .card_big {
+    width: 100px;
+    height: 600px;
+    background: white;
+    margin: 20px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+
+.container .content .content-2 .new-students {
+    flex: 2;
+    background: white;
+    min-height: 50vh;
+    margin: 0 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    display: flex;
+    flex-direction: column;
+}
+
+.container .content .content-2 .new-students table td:nth-child(1) img {
+    height: 50px;
+    width: 50px;
+}
+
+@media screen and (max-width: 1050px) {
+    .side-menu li {
+        font-size: 18px;
+    }
+    .side-menu li a{
+        font-size: 18px;
+    }
+}
+
+@media screen and (max-width: 940px) {
+    .side-menu li span {
+        display: none;
+    }
+    .side-menu li a span {
+        display: none;
+    }
+    .side-menu {
+        align-items: center;
+    }
+    .side-menu li img {
+        width: 40px;
+        height: 40px;
+    }
+    
+}
+
+@media screen and (max-width:536px) {
+    .brand-name h1 {
+        font-size: 16px;
+    }
+    .container .content .cards {
+        justify-content: center;
+    }
+    .side-menu li img {
+        width: 30px;
+        height: 30px;
+    }
+    .container .content .content-2 .recent-payments table th:nth-child(2),
+    .container .content .content-2 .recent-payments table td:nth-child(2) {
+        display: none;
+    }
+}
+
+.container .content .content-2 .new-students table td:nth-child(1) img {
+    height: 40px;
+    width: 40px;
+}
+
+
+.brand-name h1 img{
+    margin-top: 150px;
+    margin-bottom: 100px;
+    text-align: center;
+    border-radius: 80px; 
+ }
+.img-case {
+    position: relative;
+    display: inline-block;
+}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%; 
+    background-color: #f9f9f9;
+    min-width: 100px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+.img-case:hover .dropdown-content {
+    display: block;
+}
+.dropdown-content a {
+    display: block;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: #333;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+
+.username{
+    margin-top: 30px;
+    position: absolute;
+    margin-left: 70px;
+
+}
+
+/* //-------------------------EDITFORM-------------------------// */
+#editForm,
+#uploadForm {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    /* Your form styles here */
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 40px rgba(0, 168, 250, 0.5);
+    width: 60%;
+    height: 60%;
+    z-index: 9999;
+}
+.new-students label {
+    font-size: 20px;
+    padding: 8px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.new-students input[type="text"] {
+    font-size: 20px;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.new-students button {
+    font-size: 24px;
+    padding: 12px 24px;
+    margin-top: 20px;
+    border: none;
+    background-color: #337ab7;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.new-students button:hover {
+    background-color: #337ab7;
+}
+
+
+
+/* -----------Image Uploader----------- */
+
+.certificate_container {
+    padding: 0 auto;
+    background-color: #fff;
+    position: absolute;
+    top: -3%;
+    left: 10%;
+    width: 80%;
+    height: 98%;
+    margin: 0 auto;
+    border: 2px solid #00a8fa; /* Border added */
+    border-radius: 10px; /* Border radius added */
+    z-index: 9999;
+  }
+  
+  .upload-form input[type=""],[type="text"],[type="submit"] {
+    margin-bottom: 5px;
+    font-size: 20px;
+  }
+
+  /* CSS for the submit button */
+  .close-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 26px;
+    color: #999;
+}
+.btn_upload {
+    position: absolute;
+    top: 12%; /* Adjust as needed */
+    left: 20%; /* Adjust as needed */
+    background-color: #007bff;
+    color: white;
+    padding: 8px 26px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    z-index: 1; 
+}
+
+  
+
+ 
+
+.btn:hover {
+    color: #00a8fa;
+    background: white;
+    padding: 3px 8px;
+    border: 2px solid #00a8fa;
+}
+  .upload-form button {
+    background: #00a8fa;
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+    font-size: 30px;
+    padding: 10px 20px;
+    
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .upload-form button:hover {
+    color: #00a8fa;
+    background: white;
+    /* padding: 3px 8px; */
+    border: 2px solid #00a8fa;
+}
+
+.image-preview {
+    text-align: center;
+    margin-bottom: 15px;
+}.image-preview {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.preview-image {
+    width: 200px; /* Set a fixed width */
+    height: 200px; /* Set a fixed height */
+    object-fit: cover; /* Maintain aspect ratio and fill container */
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}

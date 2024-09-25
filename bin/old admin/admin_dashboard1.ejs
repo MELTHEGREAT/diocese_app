@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/admin_dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>Admin Dashboard</title>
+    <style>
+        #chart-container {
+            width: 50%; /* Set your desired width for the chart container */
+        }
+
+        #line-chart {
+            width: 100%; /* Set the canvas width to 100% of its parent container */
+            height: 300%; /* Set your desired height */
+        }
+    </style>
+</head>
+
+
+<body>
+    <div class="side-menu">
+
+        <div class="brand-name">
+            <h1>San Roque</h1>
+        </div>
+        <ul>     
+            <li id="document" class="active_menu" onclick="navigateTo('/document')">
+                <img src="admin_img/reading-book (1).png" alt="">&nbsp;<span>Document</span>
+            </li>
+            <li id="giving" onclick="navigateTo('/toGiving')">
+                <img src="admin_img/reading-book (1).png" alt="">&nbsp;<span>Giving/Tithes</span>
+            </li>
+            <li id="schedule" onclick="navigateTo('/toAdminSchedule')">
+                <img src="admin_img/teacher2.png" alt="">&nbsp;<span>Schedules</span>
+            </li>
+            <!-- <li id="events" onclick="navigateTo('/toEvents')">
+                <img src="admin_img/school.png" alt="">&nbsp;<span>Events</span>
+            </li> -->
+            <li id="notifications" onclick="navigateTo('/toNotifications')">
+                <img src="admin_img/payment.png" alt="">&nbsp;<span>Notification</span>
+            </li>
+            <li id="help" onclick="navigateTo('/toHelp')">
+                <img src="admin_img/help-web-button.png" alt="">&nbsp;<span>Help</span>
+            </li>
+            <li id="settings" onclick="navigateTo('/toSettings')">
+                <img src="admin_img/settings.png" alt="">&nbsp;<span>Settings</span>
+            </li>
+            <li id="settings" onclick="confirmLogout()">
+                <img src="admin_img/settings.png" alt="">&nbsp;<span>Logout</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div class="nav">
+                <div class="search">
+                    <input type="text" placeholder="Search..">
+                    <button type="submit"><img src="admin_img/search.png" alt=""></button>
+
+                </div>
+                <div class="user">
+                    <a href="/toBaptismal" class="btn">Add New</a>
+                    <img src="admin_img/notifications.png" alt="">
+                    <div class="img-case">
+                        <img src="admin_img/user.png" alt=""><h1 class="username"><%= userEmail %></h1>
+                       
+                        <div class="dropdown-content">
+                            <a href="#" onclick="confirmLogout()">Logout</a>
+                            <a href="#">Settings</a>
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="cards">
+
+                <div class="card">
+                    <div class="box">
+                        <h1><%= userCount %></h1>
+                        <h3>Members</h3>
+                    </div>
+                    <div class="icon-case">
+                        <img src="admin_img/students.png" alt="">
+                        <div><a href="/toMembers"><i class="fa fa-arrow-right" aria-hidden="true"></i></a></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="box">
+                        <h1><%= requestCount %></h1>
+                        <h3> Baptismal Request</h3>
+                    </div>
+                    <div class="icon-case">
+                        <img src="admin_img/students.png" alt="">
+                        <div><a href="/toadminschedule"><i class="fa fa-arrow-right" aria-hidden="true"></i></a></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="box">
+                        <h1>5986</h1>
+                        <h3>Baptistmal</h3>
+                    </div>
+                    <div class="icon-case">
+                        <img src="admin_img/students.png" alt="">
+                        <div><a href="/tobaptismal"><i class="fa fa-arrow-right" aria-hidden="true"></i></a></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="box">
+                        <h1>5</h1>
+                        <h3>Donations</h3>
+                    </div>
+                    <div class="icon-case">
+                        <img src="admin_img/income.png"alt=""> 
+                        <div><a href="/toGiving"><i class="fa fa-arrow-right" aria-hidden="true"></i></a></div>
+                        <!-- <a href="/todonations"><img src="admin_img/schools.png" alt="">></a> -->
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="box">
+                        <h1><%= totalDonationAmount %></h1>
+                        <h3>Tithes</h3>
+                    </div>
+                    <div class="icon-case">
+                        <img src="admin_img/income.png" alt="">
+                        <div><a href="/todonations"><i class="fa fa-arrow-right" aria-hidden="true"></i></a></div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="content-2">
+                <div class="recent-donations"  id="chart-container">
+                    <!-- <div class="title">
+                        <h2>Recent Donations</h2>
+                        <a href="#" class="btn">View All</a>
+                    </div> -->
+                    <!-- <div> -->
+                        <canvas id="line-chart"></canvas>
+                    <!-- </div> -->
+                    <!-- <table></table> -->
+                </div>
+                <div class="new-students">
+                    <div class="title">
+                        <h2>New Members</h2>
+                        <a href="#" class="btn">View All</a>
+                    </div>
+                    <table>
+                        <tr>
+                            <th>Profile</th>
+                            <th>Name</th>
+                            <th>option</th>
+                        </tr>
+                        <tr>
+                            <td><img src="admin_img/user.png" alt=""></td>
+                            <td>John Steve Doe</td>
+                            <td><img src="admin_img/info.png" alt=""></td>
+                        </tr>
+                        <tr>
+                            <td><img src="admin_img/user.png" alt=""></td>
+                            <td>John Steve Doe</td>
+                            <td><img src="admin_img/info.png" alt=""></td>
+                        </tr>
+                        <tr>
+                            <td><img src="admin_img/user.png" alt=""></td>
+                            <td>John Steve Doe</td>
+                            <td><img src="admin_img/info.png" alt=""></td>
+                        </tr>
+                        <tr>
+                            <td><img src="admin_img/user.png" alt=""></td>
+                            <td>John Steve Doe</td>
+                            <td><img src="admin_img/info.png" alt=""></td>
+                        </tr>
+
+                    </table>
+                </div>
+                <!-- Schedule Management -->              
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script  src="js/routes.js"></script>
+<script>
+    const data = JSON.parse('<%- data %>');
+
+    new Chart(document.getElementById('line-chart'), {
+        type: 'line',
+        data: data,
+        options: {
+            responsive: true
+            // Add other chart options as needed
+        }
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+
+</html>

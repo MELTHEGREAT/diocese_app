@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Member Dashboard</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="img/lasticon.png" rel="icon">
+  <link href="css/member.css" rel="stylesheet">
+
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="member_assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="member_assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="member_assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="member_assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="member_assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="member_assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="member_assets/css/style.css" rel="stylesheet">
+  
+</head>
+
+<body>
+
+  <!-- ======= Mobile nav toggle button ======= -->
+  <i class="bi bi-list mobile-nav-toggle d-xl-none"></i>
+
+  <!-- ======= Header ======= -->
+  <header id="header">
+    <div class="d-flex flex-column">
+
+      <div class="profile">
+        <img src="img/testimonials-4.jpg" alt="" class="img-fluid rounded-circle">
+        <h1 class="text-light"><a href="index.html"><%=userEmail%></a></h1>
+        <div class="social-links mt-3 text-center">
+          <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
+          <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
+          <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+          <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
+          <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+        </div>
+      </div>
+
+      <nav id="navbar" class="nav-menu navbar">
+        <ul>
+          <li><a href="#hero" class="nav-link scrollto active"><i class="bx bx-home"></i> <span>Home</span></a></li>
+          <li><a href="#schedule" class="nav-link scrollto"><i class="bx bx-user"></i> <span>Schedule Request</span></a></li>
+          <li><a href="#donation" class="nav-link scrollto"><i class="bx bx-file-blank"></i> <span>Tithes</span></a></li>
+          <li><a href="#baptismal_request" class="nav-link scrollto"><i class="bx bx-book-content"></i> <span>Baptismal Request</span></a></li>
+          <!-- <li><a href="#chat" class="nav-link scrollto"><i class="bx bx-server"></i> <span>Messages</span></a></li> -->
+          <li><a href="#notification" class="nav-link scrollto"><i class="bx bx-envelope"></i> <span>Notification</span></a></li>
+          <li><a href="/logout" class="nav-link"><i class="bx bx-log-out"></i> <span onclick="confirmLogout()">Log out</span></a></li>
+
+        </ul>
+      </nav><!-- .nav-menu -->
+    </div>
+  </header><!-- End Header -->
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="d-flex flex-column justify-content-center align-items-center">
+    <div class="hero-container" data-aos="fade-in">
+      <h2 style="color: white;">You are an essential part of our community.</h2>
+      <p>I'm <span class="typed" data-typed-items="Believer, Volunteer, Servant, Worshipper"></span></p>
+
+    </div>
+  </section><!-- End Hero -->
+
+  <main id="main">
+    <!-- ======= Contact Section ======= -->
+    <section id="schedule" class="contact">
+    <div class="container">
+
+        <div class="section-title">
+          <h2>SCHEDULE</h2>
+          <p>Discover meaningful moments and spiritual enrichment in our diverse array of Sunday events, ranging from soul-stirring worship services to enlightening Bible studies and engaging fellowship activities!</p>
+        </div>
+
+        <div class="row" data-aos="fade-in">
+
+      <div class="col-lg-5 d-flex align-items-stretch">
+        <div class="info">
+          <h3>Tutorial</h3>
+          <p>Here you can provide instructions or a tutorial for making a schedule</p>
+
+          <ul>
+            <li>Enter your Phone Number.</li>
+            <li>Choose your Preferred Date and Time.</li>
+            <li>Select the Request Type (e.g., Meeting, Service, Other).</li>
+            <li>Provide a Description of your schedule request.</li>
+          </ul>
+
+        </div>
+
+    </div>
+
+        <div class="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
+           <form id="schedule_form" action="/schedule" method="POST" role="form" class="node-email-form">
+                <input type="hidden" id="fullname" name="fullname" value="user">
+                 <input type="hidden" id="email" name="email" value="<%= userEmail %>">
+    
+                <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="phone">Phone Number:</label>
+                     <input type="tel" id="phone" name="phone" class="form-control" placeholder="+635575563653" required>
+                 </div>
+                <div class="form-group col-md-6">
+                    <label for="preferredDate">Preferred Date:</label>
+                    <input type="date" id="preferredDate" name="preferredDate" class="form-control" required>
+                </div>
+                </div>
+
+                 <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="preferredTime">Preferred Time:</label>
+                        <input type="time" id="preferredTime" name="preferredTime" class="form-control" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="requestType">Request Type:</label>
+                      <select id="requestType" name="requestType" class="form-control" onchange="toggleOtherInput()">
+                          <option value="meeting">Meeting</option>
+                          <option value="service">Service</option>
+                          <option value="other">Other</option>
+                      </select>
+                  </div>
+                  <div id="otherInput" class="form-group col-md-12" style="display: none;">
+                      <label for="otherRequest">Specify Other Request:</label>
+                      <textarea id="otherRequest" name="additionalInfo" class="form-control"></textarea>
+                  </div>
+                  
+                
+                <!-- <div id="otherInput" class="form-group col-md-6" style="display: none;">
+                  <label for="otherRequest">Specify Other Request:</label>
+                  <textarea id="otherRequest" name="description" class="form-control" style="width: 100%;"></textarea>
+                </div> -->
+              
+
+                <!-- <div class="my-3">
+                    <div class="loading">Loading</div>
+                    <div class="error-message"></div>
+                    <div class="sent-message">Your schedule request has been submitted. Thank you!</div>
+                </div> -->
+
+                <div class="text-center">
+                    <input type="submit" id="btnn1" value="Schedule">
+                </div>
+            </form>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+    <!-- End Contact Section -->
+      <section id="donation" class="contact">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>TITHES</h2>
+          <p>Discover meaningful moments and spiritual enrichment in our diverse array of Sunday events, ranging from soul-stirring worship services to enlightening Bible studies and engaging fellowship activities!</p>
+        </div>
+
+        <div class="row" data-aos="fade-in">
+
+ <!-- Tutorial Content -->
+      <div class="col-lg-5 d-flex align-items-stretch">
+        <div class="info">
+          <h3>Guides</h3>
+          <p>Here you can provide instructions or a tutorial for making a donation.</p>
+          <!-- Add more tutorial content as needed -->
+
+          <!-- Example Tutorial Content -->
+          <ul>
+            <li>Step 1: Fill in the GCash Reference Number.</li>
+            <li>Step 2: Enter the Tithes Amount in PHP.</li>
+            <li>Step 3: Choose the Designation for your tithes.</li>
+            <!-- Add more steps as needed -->
+          </ul>
+        </div>
+
+        </div>
+
+        <div class="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
+
+        
+        <form action="/donate" method="post" role="form" class="node-email-form">
+   
+            <input type="hidden" id="fullname" name="fullname" value="user">
+            <input type="hidden" id="email" name="email" value="<%= userEmail %>">
+    
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="gcash_reference">GCash Reference Number:</label>
+                    <input type="text" id="gcash_reference" name="gcash_reference" class="form-control" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="amount">Donation Amount (P):</label>
+                    <input type="number" id="amount" name="amount" class="form-control" min="1" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="designation">Designation:</label>
+                <select id="designation" name="designation" class="form-control">
+                    <option value="General Fund">General Fund</option>
+                    <option value="Missions">Missions</option>
+                    <option value="Building Fund">Building Fund</option>
+                    <option value="Youth Ministry">Youth Ministry</option>
+                    <option value="Special Projects">Special Projects</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="comments">Additional Comments (Optional):</label>
+                <textarea id="comments" name="comments" rows="4" cols="50" class="form-control" placeholder="Enter additional comments here..."></textarea>
+            </div>
+
+            
+              <!-- <div class="my-3" id="statusDiv">
+                  <div class="sent-message" id="sentDiv">Your donation has been successfully submitted. Thank you!</div>
+              </div> -->
+        
+          
+            <!-- <div class="my-3" id="statusDiv">
+              <div class="loading" id="loadingDiv">Loading</div>
+              <div class="error-message" id="errorDiv"></div>
+              <div class="sent-message" id="sentDiv">Your message has been sent. Thank you!</div>
+            </div> -->
+         
+          
+
+            <div class="text-center">
+                <input type="submit" id="btnn1" value="Tithes">
+            </div>
+        </form>
+
+        </div>
+
+        </div>
+
+    </div>
+    </section>
+
+    <section id="chat" class="contact">
+      <div class="container">
+          <div class="section-title">
+              <h2>Chat</h2>
+              <p>Start chatting with another user.</p>
+          </div>
+  
+          <div class="chat-container">
+              <!-- Default Conversation Messages -->
+              <div class="message">
+                  <div class="user-avatar">
+                      <img src="img/user1.jpg" alt="User 1 Avatar">
+                  </div>
+                  <div class="message-content">
+                      <p class="user-name">User 1</p>
+                      <p class="text">Hi there!</p>
+                  </div>
+              </div>
+  
+              <div class="message">
+                  <div class="user-avatar">
+                      <img src="img/user2.png" alt="User 2 Avatar">
+                  </div>
+                  <div class="message-content">
+                      <p class="user-name">User 2</p>
+                      <p class="text">Hello! How are you?</p>
+                  </div>
+              </div>
+  
+              <!-- Add more messages as needed -->
+          </div>
+  
+          <div class="message-input">
+              <form id="messageForm" action="/sendMessage" method="post" role="form">
+                  <!-- Add necessary fields, e.g., sender_email, recipient_email, message -->
+                  <input type="hidden" name="sender_email" value="user1@example.com">
+                  <input type="hidden" name="recipient_email" value="user2@example.com">
+                  <div class="form-group">
+                      <input type="text" name="message" placeholder="Type your message..." required>
+                  </div>
+                  <button type="submit">Send</button>
+              </form>
+          </div>
+      </div>
+  </section>
+<br><br>  
+
+<section id="notification">
+  <div class="notification-section">
+    <main>
+      <ul class="list-group" id="notification-list">
+        <h1 class="card-title mb-4">Notifications</h1>
+        <% if (notifications) { %>
+          <% notifications.forEach((item, index) => { %>
+            <li class="list-group-item" id="notification-item-<%= index + 1 %>">
+              <!-- You can adjust the content based on your notification schema -->
+              <p class="mb-1"><%= item.message %></p>
+              <small class="text-muted"><%= item.timestamp %></small>
+            </li>
+          <% }); %>
+        <% } else { %>
+          <li class="list-group-item">No notifications found.</li>
+        <% } %>
+      </ul>
+    </main>
+  </div>
+</section>
+
+
+  <br><br><br><br>
+  <br><br><br><br>
+  <br><br><br><br>
+    
+    <section id="baptismal_request" class="contact">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>BAPTISMAL REQUEST</h2> 
+          <div id="successMessage"></div>
+        
+          <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+        </div>
+
+        <div class="row" data-aos="fade-in">
+
+    <!-- Tutorial Content -->
+    <div class="col-lg-5 d-flex align-items-stretch">
+        <div class="info">
+          <h3>Tutorial</h3>
+          <p>Here you can provide instructions or a tutorial for making a donation.</p>
+         
+          <!-- Add more tutorial content as needed -->
+
+          <!-- Example Tutorial Content -->
+          <ul>
+            <li>Step 1: Fill in the GCash Reference Number.</li>
+            <li>Step 2: Enter the Donation Amount in PHP.</li>
+            <li>Step 3: Choose the Designation for your donation.</li>
+            <!-- Add more steps as needed -->
+          </ul>
+        </div>
+
+    </div>
+  
+
+    <div class="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
+      <form action="/submit_baptismal_request1" method="post" role="form" class="node-email-form">
+        <!-- Hidden fields to pass user information -->
+        <input type="hidden" id="email" name="email" value="<%= userEmail %>">
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="first_name">First Name:</label>
+                <input type="text" id="first_name" name="first_name" class="form-control" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="last_name">Last Name:</label>
+                <input type="text" id="last_name" name="last_name" class="form-control" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="gcash_reference">GCash Reference Number:</label>
+            <input type="text" id="gcash_reference" name="gcash_reference" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="request_date">Request Date:</label>
+            <input type="date" id="request_date" name="request_date" class="form-control" required>
+        </div>
+
+        <div class="my-3">
+            <div class="loading">Loading</div>
+            <div class="error-message"></div>
+            <div class="sent-message">Your request has been submitted. Thank you!</div>
+        </div>
+
+        <div class="text-center">
+            <input type="submit" id="btnn1" value="Submit Request">
+        </div>
+    </form>
+
+        </div>
+
+        </div>
+
+      </div>
+    </section>
+  </main>
+  <!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+    <div class="container">
+      <!-- <div class="copyright">
+        &copy; Copyright <strong><span>Faith Sync</span></strong>
+      </div> -->
+      <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you purchased the pro version. -->
+        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/iportfolio-bootstrap-portfolio-websites-template/ -->
+        Church by: <a href="https://web.facebook.com/faithsync/?_rdc=1&_rdr">Faith Sync</a>
+      </div>
+    </div>
+  </footer><!-- End  Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+<!-- Include the JavaScript code -->
+<script>
+  // Assume this function is called when a new notification is received
+  function showNotification(notificationId, imageUrl, message, timestamp) {
+    const notificationItem = document.getElementById(notificationId);
+
+    // Update the image source
+    const imageElement = notificationItem.querySelector('.notification-image');
+    imageElement.src = imageUrl;
+
+    // Update the message and timestamp
+    const messageParagraph = notificationItem.querySelector('p');
+    const timestampSmall = notificationItem.querySelector('.text-muted');
+
+    messageParagraph.textContent = message;
+    timestampSmall.textContent = timestamp;
+  }
+
+  // Example usage:
+</script>
+
+  <!-- Vendor JS Files -->
+  <% if (typeof message !== 'undefined') { %>
+    <script>
+        alert("<%= message %>");
+    </script>
+<% } %>
+<style>
+  body {
+      overflow: hidden; /* This prevents scrolling */
+    }
+</style>
+  <script src="member_assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="member_assets/vendor/aos/aos.js"></script>
+  <script src="member_assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="member_assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="member_assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="member_assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="member_assets/vendor/typed.js/typed.umd.js"></script>
+  <script src="member_assets/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="member_assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="member_assets/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const statusDiv = document.getElementById('statusDiv');
+        const loadingDiv = document.getElementById('loadingDiv');
+        const errorDiv = document.getElementById('errorDiv');
+        const sentDiv = document.getElementById('sentDiv');
+
+        // Assume you have a form with the id 'donationForm'
+        document.getElementById('donationForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Display loading message
+            loadingDiv.style.display = 'block';
+            errorDiv.style.display = 'none';
+            sentDiv.style.display = 'none';
+
+            // Make an AJAX request to your server
+            fetch('/donate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    // Include your form data here
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        // Donation was successful
+                        loadingDiv.style.display = 'none';
+                        sentDiv.style.display = 'block';
+                    } else {
+                        // Donation failed
+                        loadingDiv.style.display = 'none';
+                        errorDiv.style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    loadingDiv.style.display = 'none';
+                    errorDiv.style.display = 'block';
+                });
+        });
+    });
+</script>
+</body>
+<style>
+  
+  .chat-container {
+    max-height: 300px;
+    overflow-y: scroll;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .message {
+    display: flex;
+    margin-bottom: 10px;
+  }
+
+  .user-avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+
+  .message-content {
+    flex-grow: 1;
+  }
+
+  .user-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .message-input {
+    display: flex;
+  }
+
+  .message-input input {
+    flex-grow: 1;
+    padding: 5px;
+  }
+
+  .message-input button {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+</style>
+<script  src="js/routes.js"></script>
+<script  src="js/member_dashboard.js"></script>
+
+
+
+</html>

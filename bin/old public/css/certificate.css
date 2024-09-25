@@ -1,0 +1,79 @@
+body {
+    font-family: Arial, sans-serif;
+  
+  }
+  
+  .container {
+    width: 700px;
+    margin: 0 auto;
+    padding: 200px;
+    background-image: url('../images1/33.webp');
+    background-size: contain; /* Fit the entire image within the container */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  
+  .header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .header h1 {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .header p {
+    font-size: 18px;
+  }
+  
+  .certificate-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .certificate-info p {
+    font-size: 16px;
+    line-height: 1.5; /* Increased line height for better readability */
+  }
+  
+  .image-container {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .image-container img {
+    width: 200px; /* Adjust image size as needed */
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  }
+  
+  .signature {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .signature p {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+  
+  .signature hr {
+    width: 200px;
+    border: 1px solid black;
+    margin-bottom: 15px;
+  }
+  
+  @media print{
+    body * {
+      display:none;
+    }
+    #certificateContainer, #certificateContainer * {
+      display: block;
+    }
+  }

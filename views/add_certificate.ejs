@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Certificate of Baptism</title>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<link rel="stylesheet" href="css/certificate.css">
+</head>
+<body>
+  <form id="certificateForm">
+    <label for="baptizedName">Baptized:</label>
+    <input type="text" id="baptizedName" name="baptizedName"><br><br>
+    
+    <label for="baptizedOn">Baptized On:</label>
+    <input type="text" id="baptizedOn" name="baptizedOn"><br><br>
+    
+    <label for="parents">Parents:</label>
+    <input type="text" id="parents" name="parents"><br><br>
+    
+    <label for="minister">Minister:</label>
+    <input type="text" id="minister" name="minister"><br><br>
+    
+    <input type="submit" value="Generate Certificate">
+  </form>
+
+  <div class="container" id="certificateContainer">
+    <div class="header">
+      <h1>Full Certificate of Baptism</h1>
+      <p>Baptism Registry</p>
+    </div>
+
+    <!-- <div class="image-container">
+      <img src="images1/33.webp" alt="Baptism Image">
+    </div> -->
+
+    <div class="certificate-info">
+      <p><strong>Baptized:</strong> Jane Doe</p>
+      <p><strong>Baptized On:</strong> August 22, 2022</p>
+    </div>
+
+    <div class="certificate-info">
+      <p><strong>Parents:</strong> John and Jane Doe</p>
+      <p><strong>Minister:</strong> Rev. Richard Roe</p>
+    </div>
+
+    <div class="signature">
+     
+      <hr>
+      <p>Church of Christian Fellowship</p>
+    </div>
+</div>
+
+<div class="buttons">
+  <button onclick="printCertificate()">Print Certificate</button>
+  <!-- <button id="printCertificate">Print Certificate</button> -->
+  <button onclick="downloadCertificate()">Download Certificate</button>
+</div>
+</body>
+<script>
+  document.getElementById('certificateForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent form submission
+
+    // Get values from the form
+    const baptizedName = document.getElementById('baptizedName').value;
+    const baptizedOn = document.getElementById('baptizedOn').value;
+    const parents = document.getElementById('parents').value;
+    const minister = document.getElementById('minister').value;
+
+    // Create the certificate HTML
+    const certificateHTML = `
+      <div class="header">
+        <h1>Full Certificate of Baptism</h1>
+        <p>Baptism Registry</p>
+      </div>
+
+      <div class="image-container">
+        <img src="path/to/baptism-image.jpg" alt="Baptism Image">
+      </div>
+
+      <div class="certificate-info">
+        <p><strong>Baptized:</strong> ${baptizedName}</p>
+        <p><strong>Baptized On:</strong> ${baptizedOn}</p>
+      </div>
+
+      <div class="certificate-info">
+        <p><strong>Parents:</strong> ${parents}</p>
+        <p><strong>Minister:</strong> ${minister}</p>
+      </div>
+
+      <div class="signature">
+        <p>Parroqiua De San Roque</p>
+        <hr>
+        <p>Church of Christian Fellowship</p>
+      </div>
+    `;
+
+    // Update the certificate container with the generated HTML and display it
+    const certificateContainer = document.getElementById('certificateContainer');
+    certificateContainer.innerHTML = certificateHTML;
+    certificateContainer.style.display = 'block';
+  });
+</script>
+<script>
+function generateCertificate(event) {
+  event.preventDefault(); // Prevent form submission
+
+  // Fetch form input values
+  const baptized = document.getElementById('baptizedName').value;
+  const baptizedOn = document.getElementById('baptizedOn').value;
+  const parents = document.getElementById('parents').value;
+  const minister = document.getElementById('minister').value;
+
+  // Update certificate content with form input values
+  const certificateContent = `
+    <div class="header">
+      <h1>Full Certificate of Baptism</h1>
+      <p>Baptism Registry</p>
+    </div>
+
+    <div class="certificate-info">
+      <p><strong>Baptized:</strong> ${baptized}</p>
+      <p><strong>Baptized On:</strong> ${baptizedOn}</p>
+    </div>
+
+    <div class="certificate-info">
+      <p><strong>Parents:</strong> ${parents}</p>
+      <p><strong>Minister:</strong> ${minister}</p>
+    </div>
+
+    <div class="signature">
+      <hr>
+      <p>Church of Christian Fellowship</p>
+    </div>
+  `;
+
+  // Update certificate container with generated content
+  document.getElementById('certificateContainer').innerHTML = certificateContent;
+}
+
+// Rest of your functions (printCertificate, downloadCertificate) here...
+</script>
+<script>
+  // Function to print the certificate container
+  function printCertificate() {
+      // Use html2canvas to capture the content as an image
+      html2canvas(document.getElementById('certificateContainer')).then(canvas => {
+        const imageData = canvas.toDataURL('image/png');
+
+        // Create a new window to display the captured content as an image
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write('<img src="' + imageData + '" style="width:100%;">');
+
+        // Trigger printing when the image has loaded
+        printWindow.document.querySelector('img').onload = function() {
+          printWindow.print();
+        };
+      });
+    }
+
+    function downloadCertificate() {
+      // Use html2canvas to capture the content as an image
+      html2canvas(document.getElementById('certificateContainer')).then(canvas => {
+        // Convert canvas to image data URL
+        const imageData = canvas.toDataURL('image/png');
+
+        // Create a link element
+        const downloadLink = document.createElement('a');
+        downloadLink.href = imageData;
+        downloadLink.download = 'certificate.png'; // Set the download file name
+        downloadLink.click(); // Simulate click to trigger download
+      });
+    }
+</script>
+
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+</html>

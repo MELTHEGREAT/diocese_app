@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/card_members.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>Your Baptismal</title>
+    <style>
+        .icon-case a {
+        
+    /* top: 100px;  */
+    /* right: 100px; */
+    font-size: 30px ;
+    color: #00a8fa;
+    
+}
+.username{
+    margin-top: 30px;
+    position: absolute;
+    margin-left: 70px;
+}
+
+    </style>
+</head>
+
+<body>
+    <div class="side-menu">
+        <div class="brand-name">
+            <h1> San Roque</h1>
+        </div>
+        <ul>
+            <li id="document" class="active_menu" onclick="navigateTo('/document')">
+                <img src="admin_img/reading-book (1).png" alt="">&nbsp;<span>Document</span>
+            </li>
+            <li id="giving" onclick="navigateTo('/toGiving')">
+                <img src="admin_img/reading-book (1).png" alt="">&nbsp;<span>Giving/Tithes</span>
+            </li>
+            <li id="schedule" onclick="navigateTo('/toAdminSchedule')">
+                <img src="admin_img/teacher2.png" alt="">&nbsp;<span>Schedules</span>
+            </li>
+            <li id="events" onclick="navigateTo('/toEvents')">
+                <img src="admin_img/school.png" alt="">&nbsp;<span>Events</span>
+            </li>
+            <li id="notifications" onclick="navigateTo('/toNotifications')">
+                <img src="admin_img/payment.png" alt="">&nbsp;<span>Notification</span>
+            </li>
+            <li id="help" onclick="navigateTo('/toHelp')">
+                <img src="admin_img/help-web-button.png" alt="">&nbsp;<span>Help</span>
+            </li>
+            <li id="settings" onclick="navigateTo('/toSettings')">
+                <img src="admin_img/settings.png" alt="">&nbsp;<span>Settings</span>
+            </li>
+            <li id="settings" onclick="confirmLogout()">
+                <img src="admin_img/settings.png" alt="">&nbsp;<span>Logout</span>
+            </li>
+        </ul>
+    </div>
+    <div class="container">
+        <div class="header">
+            <div class="nav">
+                <div class="search">
+                    <input type="text" placeholder="Search..">
+                    <button type="submit"><img src="admin_img/search.png" alt=""></button>
+                </div>
+                <div class="user">
+                    <a href="#" class="btn" id="viewAllButton">View All</a>
+                    <img src="admin_img/notifications.png" alt="">
+                    <div class="img-case">
+                        <img src="admin_img/user.png" alt=""><h1 class="username">admin<h1>
+                       
+                        <div class="dropdown-content">
+                            <a href="#" onclick="confirmLogout()">Logout</a>
+                            <a href="#">Settings</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            
+           <br><br>
+            <div class="content-2">
+                <div class="recent-payments">
+                    <div class="title">
+                        <h2>Recent Members</h2>
+                        
+                    
+                    </div>
+                    <div>
+                        <!-- Hardcoded base64 image for testing -->
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJAAAACQCAIAAAD+Bd...[rest of the base64 string]" alt="Test Image">
+
+                        <% for (let i = 0; i < imageData.length; i++) { %>
+                          <!-- Display the image data -->
+                          <img src="data:image/png;base64, <%= imageData[i].image_data %>" alt="Baptismal Image">
+                        <% } %>
+                      </div>
+                      
+                    
+                </div>
+                
+                <!-- ADD CERTFICATE -->      
+               
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script  src="js/routes.js"></script>
+
+
+
+</html>

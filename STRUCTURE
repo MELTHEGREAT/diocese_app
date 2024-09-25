@@ -1,0 +1,287 @@
+
+//NOTIFICATIONS
+app.get('/toNotifications', (req, res) => {
+    res.render('admin/notification');
+});
+
+
+// LOGIN SAN ROQUE
+app.post('/login_sanroque', (req, res) => {
+    const { email, password } = req.body;
+    const getUserQuery = 'SELECT * FROM users WHERE email = ?';
+    const getDonationQuery = 'SELECT `donation_id`, `amount`, `name`, `email`, `donation_date`, `reference_number`, `confirmation_status`, `designation`, `additional_comments` FROM `donations` ORDER BY `donation_date` DESC LIMIT 5';   
+    const countUsersQuery = 'SELECT COUNT(*) AS userCount FROM users';
+    const totalDonationQuery = 'SELECT SUM(amount) AS totalAmount FROM donations';
+    const countBaptismalRequestsQuery = 'SELECT COUNT(*) AS baptismalRequestCount FROM baptismal_request';
+    const countCustomerServices = 'SELECT COUNT(*) AS contactMessagesCount FROM contact_message';
+    const countScheduleRequestsQuery = 'SELECT COUNT(*) AS scheduleRequestCount FROM schedule_requests';
+    const countStaRitaUsersQuery = 'SELECT COUNT(*) AS staRitaUserCount FROM sta_rita_users';
+    const adminQuery = ` SELECT *, 'users' as source FROM users WHERE role = 'admin' UNION SELECT *, 'sta_rita_users' as source FROM sta_rita_users WHERE role = 'admin' `;
+
+    // Retrieve user by email
+    connection.query(getUserQuery, [email], (err, results) => {
+        if (err || results.length === 0) {
+            // Handle login failure
+            res.render('san_roque_login', { message: 'Login Failed' });
+            console.error(`Email: ${email}, is not registered.`);
+            return;
+        }
+
+        const user = results[0];
+
+        // Compare hashed passwords
+        bcrypt.compare(password, user.password, (bcryptErr, bcryptResult) => {
+            if (bcryptErr || !bcryptResult) {
+                res.send('error');
+                console.error(`User: ${email}, Wrong Password.`);
+                return;
+            }
+
+            // Fetch user count
+            connection.query(countUsersQuery, (err, countResult) => {
+                if (err) {
+                    res.send('Error fetching user count.');
+                    return;
+                }
+
+                const userCount = countResult[0].userCount;
+
+                connection.query(totalDonationQuery, (donationErr, donationResult) => {
+                    if (donationErr) {
+                        res.send('Error fetching total donation amount.');
+                        return;
+                    }
+
+                    const totalDonationAmount = donationResult.length > 0 ? donationResult[0].totalAmount : 0;
+
+                    // Fetch baptismal request count
+                    connection.query(countBaptismalRequestsQuery, (baptismalRequestErr, baptismalRequestResult) => {
+                        if (baptismalRequestErr) {
+                            res.send('Error fetching baptismal request count.');
+                            return;
+                        }
+
+                        const baptismalRequestCount = baptismalRequestResult[0].baptismalRequestCount;
+                    
+                        // Fetch schedule request count
+                        connection.query(countScheduleRequestsQuery, (scheduleRequestErr, scheduleRequestResult) => {
+                            if (scheduleRequestErr) {
+                                res.send('Error fetching schedule request count.');
+                                return;
+                            }
+                            
+
+                            const scheduleRequestCount = scheduleRequestResult[0].scheduleRequestCount;
+
+                            // Fetch contact messages
+                            connection.query(countCustomerServices, (contactRequestErr, contactRequestResult) => {
+                                if (contactRequestErr) {
+                                    res.send('Error fetching contact request count.');
+                                    return;
+                                }
+
+                                const contactMessagesCount = contactRequestResult[0].contactMessagesCount;
+
+                                connection.query(getDonationQuery, (err, recentDonations) => {
+                                    if (err) {
+                                        // Handle the error, for example, send an error response or log the error
+                                        console.error('Error fetching recent donations:', err);
+                                        return;
+                                    }
+
+                                    // getChartData((error, dataForChart) => {
+                                    //     if (error) {
+                                    //         return res.status(500).send('Error fetching chart data');
+                                    //     }
+                                    // });
+
+                                        req.session.userEmail = user.email;
+                                        const userEmail = user.email;
+                                        
+                                        // Fetch user count from both tables for superadmin
+                                        connection.query(countUsersQuery, (err, usersCountResult) => {
+                                            if (err) {
+                                                res.send('Error fetching total user count.');
+                                                return;
+                                            }
+
+                                            const query = `
+                                                    SELECT id, username, email, role, 'users' as source FROM users WHERE role = 'admin'
+                                                    UNION
+                                                    SELECT id, username, email, role, 'sta_rita_users' as source FROM sta_rita_users WHERE role = 'admin'
+                                                `;
+
+                                                connection.query(adminQuery, (queryErr, adminList) => {
+                                                    if (queryErr) {
+                                                        res.send('Error fetching admin list.');
+                                                        return;
+                                                    }
+                                                    
+
+                                            connection.query(countStaRitaUsersQuery, (staRitaUsersErr, staRitaUsersCountResult) => {
+                                                if (staRitaUsersErr) {
+                                                    res.send('Error fetching total Sta Rita user count.');
+                                                    return;
+                                                }
+                                                    
+
+                                                const totalUsers = usersCountResult[0].userCount + staRitaUsersCountResult[0].staRitaUserCount;
+
+                                                if (user.role === 'admin') {
+                                                    logger.info(`User ${userEmail} logged in at ${new Date()}`);
+
+                                                    res.render('admin/admin_dashboard', {
+                                                        userCount,
+                                                        userEmail,
+                                                        // data: JSON.stringify(dataForChart),                                       
+                                                        totalDonationAmount,
+                                                        scheduleRequestCount,
+                                                        contactMessagesCount,
+                                                        baptismalRequestCount,
+                                                        recentDonations
+                                                        
+                                                    });
+                                                }
+                                                else if (user.role === 'superadmin') {
+                                                    res.render('super_admin/superadmin',{totalUsers,adminList});
+                                                }  else {
+                                                    res.render('members/member_dashboard', {
+                                                        userCount,
+                                                        userEmail,                                     
+                                                        getUserQuery
+                                                        
+                                                    });                                                        
+                                                }
+                                            });
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
+}); 
+
+
+<% activityLogData.forEach(log => { %>
+                  <tr class="text-gray-700 dark:text-gray-400" onclick="editUser('')">
+                    <!-- Display data in table cells -->
+                    <td class="px-4 py-3">
+                      <div class="flex items-center text-sm">
+                        <!-- Avatar with inset shadow -->
+                        <div class="relative hidden w-8 h-8 mr-3 rounded-full md:block">
+                          <img class="object-cover w-full h-full rounded-full" src="https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjE3Nzg0fQ" alt="" loading="lazy" />
+                          <div class="absolute inset-0 rounded-full shadow-inner" aria-hidden="true"></div>
+                        </div>
+                        <div>
+                          <p class="font-semibold"> <%= log.email  %></p>
+                          <p class="text-xs text-gray-600 dark:text-gray-400">ID: <%= log.userId %></p>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-4 py-3 text-sm"><%= log.action  %></td>
+                    <td class="px-4 py-3 text-sm">P <%= log.timestamp  %></td>
+                    <td class="px-4 py-3">
+                      <div class="flex items-center space-x-4 text-sm">
+                        <!-- Edit and Delete Buttons (unchanged) -->
+                        <button class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400" aria-label="Edit" data-toggle="modal" data-target="#scheduleModal" onclick="editUser('')">
+                          <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>
+                          </svg>
+                        </button>
+                        <button class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray" aria-label="Delete" onclick="showDeleteConfirmation('')">
+                          <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                          </svg>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+
+
+
+
+
+                  MODULES THAT ARE PENDING TO USE 
+
+                  
+// app.use(csrf({ cookie: true }));
+
+// Middleware to add csrfToken to locals for every route
+// app.use((req, res, next) => {
+//   res.locals.csrfToken = req.csrfToken();
+//   next();
+// });
+const csrf = require('csurf');
+
+
+app.post('/sendMessage', (req, res) => {
+    const { sender_email, recipient_email, message } = req.body;
+    const userEmail = req.session.userEmail;
+
+    // Assuming you have a function in your database module to perform the insert
+    const insertMessageQuery = 'INSERT INTO messages (sender_email, recipient_email, message) VALUES (?, ?, ?)';
+    connection.query(insertMessageQuery, [sender_email, recipient_email, message], (insertErr, insertResults) => {
+        if (insertErr) {
+            console.error('Error inserting message:', insertErr);
+            res.status(500).send('Internal Server Error');
+        } else {
+            console.log(`User: ${sender_email} successfully sent data`);
+
+            // Fetch messages again after sending a new message
+            getMessages(userEmail, (err, messages) => {
+                if (err) {
+                    console.error('Error fetching messages:', err);
+                    res.status(500).send('Internal Server Error');
+                } else {
+                    // Render the view with updated messages
+                    res.render('members/member_dashboard', {  userEmail, messages });
+                }
+            });
+        }
+    });
+
+
+
+// app.get('/edit/:id', (req, res) => {
+//   const id = req.params.id;
+
+//   // Fetch the data for the specified ID from the database
+//   const query = 'SELECT id, email, selected_date, source, submission_date, amount FROM input_income WHERE id = ?';
+//   connection.query(query, [id], (err, results) => {
+//     if (err) {
+//       console.error(err);
+//       res.status(500).send('Internal Server Error');
+//       return;
+//     }
+
+//     if (results.length === 0) {
+//       res.status(404).send('Record not found');
+//       return;
+//     }
+
+//     // Render your edit modal with the fetched data
+//     res.render('edit-modal', { data: results[0] });
+//   });
+// });
+    
+// Middleware to check if the user is logged in
+// const isLoggedIn = (req, res, next) => {
+//     if (req.session.userId) {
+//       next();
+//     } else {
+//       res.status(401).json({ message: 'Unauthorized: User not logged in' });
+//     }
+//   };
+// Route to update 
+                        <td class="px-4 py-3 text-sm"><%= new Date(donation.donation_date).toLocaleDateString() %></td>
+ <button
+                          class="flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-500 border border-transparent rounded-lg active:bg-green-500 hover:bg-green-600 focus:outline-none focus:shadow-outline-green"
+                          onclick="triggerFileInput('<%= row.user_id %>')"
+                        >
+                          <span>Add</span>
+                          <span class="ml-2">+</span>
+                        </button>

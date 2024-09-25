@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/card_members.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>Admin Members</title>
+    <style>
+        .icon-case a {
+        
+    /* top: 100px;  */
+    /* right: 100px; */
+    font-size: 30px ;
+    color: #00a8fa;
+    
+}
+
+    </style>
+</head>
+
+<body>
+    <div class="side-menu">
+        <div class="brand-name">
+            <h1> San Roque</h1>
+        </div>
+        <ul>
+            <li id="document" class="active_menu" onclick="navigateTo('/document')">
+                <img src="admin_img/reading-book (1).png" alt="">&nbsp;<span>Document</span>
+            </li>
+            <li id="giving" onclick="navigateTo('/toGiving')">
+                <img src="admin_img/reading-book (1).png" alt="">&nbsp;<span>Giving/Tithes</span>
+            </li>
+            <li id="schedule" onclick="navigateTo('/toAdminSchedule')">
+                <img src="admin_img/teacher2.png" alt="">&nbsp;<span>Schedules</span>
+            </li>
+            <li id="events" onclick="navigateTo('/toEvents')">
+                <img src="admin_img/school.png" alt="">&nbsp;<span>Events</span>
+            </li>
+            <li id="notifications" onclick="navigateTo('/toNotifications')">
+                <img src="admin_img/payment.png" alt="">&nbsp;<span>Notification</span>
+            </li>
+            <li id="help" onclick="navigateTo('/toHelp')">
+                <img src="admin_img/help-web-button.png" alt="">&nbsp;<span>Help</span>
+            </li>
+            <li id="settings" onclick="navigateTo('/toSettings')">
+                <img src="admin_img/settings.png" alt="">&nbsp;<span>Settings</span>
+            </li>
+        </ul>
+    </div>
+    <div class="container">
+        <div class="header">
+            <div class="nav">
+                <div class="search">
+                    <input type="text" placeholder="Search..">
+                    <button type="submit"><img src="admin_img/search.png" alt=""></button>
+                </div>
+                <div class="user">
+                    <a href="#" class="btn" id="viewAllButton">View All</a>
+                    <img src="admin_img/notifications.png" alt="">
+                    <div class="img-case">
+                        <a href=""><img src="admin_img/user.png" alt=""></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="cards">
+                <% users.slice(0, 6).forEach(user => { %>
+                    <div class="card">
+                        <div class="box">
+                            <h3><%= user.fullname %></h3>
+                            <!-- Display other user information here -->
+                        </div>
+                        <div class="icon-case">
+                            <img src="admin_img/students.png" alt="">
+                            <div><a href="#" onclick="showEditForm()"><i class="fa fa-arrow-right" aria-hidden="true"></i></a></div>
+                            <div><a href="#" onclick="addCertificate()">Add Certificate</a></div>
+                        </div>
+
+                        <!-- Inside the user card iteration -->
+                        <div class="icon-case" style="display: none;">
+                            <img src="admin_img/students.png" alt="">
+                            <div class="details-link"><a href="/userDetails/<%= user.id %>">DETAILS</a></div>
+                        </div>
+                        
+
+
+                    </div>
+                    
+                <% }) %>
+                <div class="hidden-cards" style="display: none;">
+                    <% users.slice(6).forEach(user => { %>
+                        <!-- Your hidden card structure for remaining users -->
+                        <!-- ... -->
+                    <% }) %>
+                </div>
+           
+            <div class="content-2">
+                <div class="recent-payments">
+                    <div class="title">
+                        <h2>Recent Members</h2>
+                        <a href="#" class="btn">Request Certificate</a>
+                    </div>
+                    <table id="myTable">
+                        <tr>
+                            
+                            <!-- <th>Profile</th> -->
+                            <th>ID</th>
+                            <th>Fullname</th> 
+                            <th>Email</th>       
+                            <th>Contact</th>
+                            <th>Role</th>
+                            <th>Action</th>
+                            
+                        </tr>
+                        <tbody  id="tableBody">
+                            <% users.forEach(function(user) { %>
+                                <tr onclick="editUser('<%= user.id %>','<%= user.fullname %>', '<%= user.email %>', '<%= user.contact_number %>', '<%= user.role %>')">
+                                  <td><%= user.id %></td>
+                                  <td><%= user.fullname %></td>
+                                  <td><%= user.email %></td>
+                                  <td><%= user.contact_number %></td>
+                                  <td><%= user.role %></td>
+                                  <td id="">
+                                    <a href="#" id="actionBtn">Edit</a> |
+                                    <a href="#" onclick="deleteUser('<%= user.id %>')" id="actionBtn">Delete</a>
+                                  </td>
+                                </tr>
+                            <% }); %>
+                              
+                
+                          </tbody>
+                    </table>
+                </div>
+                <!-- <div class="new-students">
+                    <div class="title">
+                        <h2>EDIT USER</h2>
+                        <a href="#" class="btn">View All</a>
+                    </div>
+                    <div class="form-left">
+                        <form id="editForm" action="/updateUser" method="post" >
+                            <label style="display: none;">Contact</label>
+                            <input type="text" name="id" id="editUserId" style="display: none;">
+                            <label for="">Fullname: </label>
+                            <input type="text" name="fullname" id="editNewFullname" placeholder="New Username">
+                            <label for="">Email: </label>
+                            <input type="text" name="email" id="editNewEmail" placeholder="New Password">
+                            <label for="">Contact: </label>
+                            <input type="text" name="contact_number" id="editNewContact" placeholder="+63964839384">
+                            <label for="">Role: </label>
+                            <input type="text" name="role" id="editNewRole" placeholder="New Role">
+                            <button type="submit" id="updateBtn" onclick="confirmUpdate()" class="btn">Update User</button>
+                        </form>
+                    </div>
+                </div> -->
+                <!-- ADD CERTFICATE -->      
+                <form style="display: none;" id="add_certificates" action="" method="">
+                    <div class="title">
+                        <h2>EDIT USER</h2>
+                    </div>
+                    <div class="certificate_container">
+                        <div class="title">
+                            <h2>CERTIFICATE UPLOADER</h2> 
+                        </div>
+                        <div class="upload-form">
+                          <form id="imageUploadForm" enctype="multipart/form-data">
+                            <label for="fileInput">Select an image:</label>
+                            <input type="file" id="fileInput" name="fileInput" accept="image/*" required>
+                            <button type="submit">Upload Image</button>
+                          </form>
+                        </div>
+                        <div class="upload-preview" id="preview">
+                          <h2>Preview</h2>
+                          <img id="imagePreview" src="images1/default_certificate.png" alt="Image Preview">
+                        </div>
+                      </div>
+                    <!-- <label for="">First Name: </label>
+                    <input type="text" name="firstname" id="editNewAmount" placeholder="Fisrt name">
+                    <label for="">Last Name: </label>
+                    <input type="text" name="lastname" id="editNewFullname" placeholder="Last name">
+                    <label for="">Payment: </label>
+                    <input type="text" name="password" id="editNewPassword" placeholder="New Password" value="P 50" readonly> -->
+
+                    <!-- <label for="">Reference Code: </label>
+                    <input type="text" name="email" id="editNewEmail" placeholder="New Password">
+                                         
+                    <button type="submit" id="updateBtn" onclick="confirmUpdate()" class="btn_update">Update User</button>
+                    <button type="button" onclick="cancelEdit()" class="btn_cancel">Cancel</button> -->
+                </form>         
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    const fileInput = document.getElementById('fileInput');
+    const imagePreview = document.getElementById('imagePreview');
+
+    fileInput.addEventListener('change', function() {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          imagePreview.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      } 
+    });
+  </script>
+<script>
+
+function showEditForm(rowId) {
+    var editForm = document.getElementById("edit_Form");
+    editForm.style.display = "block";
+   
+   
+}
+function cancelEdit() {
+    var editForm = document.getElementById("edit_Form");
+    editForm.style.display = "none";
+ 
+    document.removeEventListener("click", handleOutsideClick);
+}
+function addCertificate(rowId) {
+    var editForm = document.getElementById("add_certificates");
+    editForm.style.display = "block";
+   
+   
+}
+function cancelEdit() {
+    var editForm = document.getElementById("add_certificate");
+    editForm.style.display = "none";
+ 
+    document.removeEventListener("click", handleOutsideClick);
+}
+  document.addEventListener('DOMContentLoaded', function() {
+    const viewAllButton = document.getElementById('viewAllButton');
+
+    viewAllButton.addEventListener('click', function() {
+        const hiddenCards = document.querySelector('.hidden-cards');
+        hiddenCards.style.display = 'block';
+        viewAllButton.style.display = 'none';
+    });
+});
+
+
+    function editUser(id, fullname, email, contact_number, role) {
+        document.getElementById('editUserId').value = id;
+        document.getElementById('editNewFullname').value = fullname;
+        document.getElementById('editNewEmail').value = email;
+        document.getElementById('editNewContact').value = contact_number;
+        document.getElementById('editNewRole').value = role;
+    }
+
+    
+   function deleteUser(userId) {
+    // Ask for confirmation before deleting
+    const confirmation = confirm('Are you sure you want to delete this user?');
+
+    if (confirmation) {
+        fetch(`/delete/user/${userId}`, {
+            method: 'DELETE',
+        })
+        .then(response => {
+            if (response.ok) {
+                location.reload(); // This reloads the page
+            } else {
+                // Handle errors
+                console.error('Error deleting user');
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting user:', error);
+        });
+    } else {
+        // User canceled the deletion
+        console.log('Deletion canceled');
+    }
+}
+
+function confirmUpdate() {
+    const confirmation = confirm('Are you sure you want to update this user?');
+    if (response.ok) {
+    const confirmation = confirm('Are you sure you want to update this user?');
+
+    if (confirmation) {
+        location.reload(); // This reloads the page after confirmation
+    } else {
+        console.log('Update canceled');
+    }
+} else {
+    console.error('Error updating user');
+}
+    // if (!confirmation) {
+    //     event.preventDefault(); // Prevent form submission if not confirmed
+    // }
+}
+ 
+</script>
+<script>
+    function navigateTo(route) {
+     window.location.href = route;
+   }
+</script>
+
+</html>
+
+</html>

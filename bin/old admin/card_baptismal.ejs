@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/card_baptismal.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .container .content .cards .card .box img {
+        width: 100%; /* Make the image fill the width of the box */
+        height: 100%; /* Make the image fill the height of the box */
+        object-fit: cover; /* Maintain aspect ratio and cover the box */
+    }
+    </style>
+    <title>Baptismal List</title>
+</head>
+
+<body>
+    <div class="side-menu">
+        <div class="brand-name">
+            <h1>San Roque</h1>
+        </div>
+        <ul>
+            <li id="document" class="active_menu" onclick="navigateTo('/document')">
+                <img src="admin_img/reading-book (1).png" alt="">&nbsp;<span>Document</span>
+            </li>
+            <li id="giving" onclick="navigateTo('/toGiving')">
+                <img src="admin_img/reading-book (1).png" alt="">&nbsp;<span>Giving/Tithes</span>
+            </li>
+            <li id="schedule" onclick="navigateTo('/toAdminSchedule')">
+                <img src="admin_img/teacher2.png" alt="">&nbsp;<span>Schedules</span>
+            </li>
+            <li id="events" onclick="navigateTo('/toEvents')">
+                <img src="admin_img/school.png" alt="">&nbsp;<span>Events</span>
+            </li>
+            <li id="notifications" onclick="navigateTo('/toNotifications')">
+                <i class="fa fa-commenting-o" aria-hidden="true"></i><img src="admin_img/notif.png" alt="">&nbsp;<span>Notification</span>
+            </li>
+            <li id="help" onclick="navigateTo('/toHelp')">
+                <img src="admin_img/help-web-button.png" alt="">&nbsp;<span>Help</span>
+            </li>
+            <li id="settings" onclick="navigateTo('/toSettings')">
+                <img src="admin_img/settings.png" alt="">&nbsp;<span>Settings</span>
+            </li>
+            <li id="settings" onclick="confirmLogout()">
+                <img src="admin_img/settings.png" alt="">&nbsp;<span>Logout</span>
+            </li>
+        </ul>
+    </div>
+    <div class="container">
+        <div class="header">
+            <div class="nav">
+                
+                <!-- <div class="search">
+                    <input type="text" placeholder="Search..">
+                    <button type="submit"><img src="admin_img/search.png" alt=""></button>
+
+                </div> -->
+                <div class="search">
+                    <input type="text" placeholder="Search.." id="searchInput">
+                    <button type="button" id="searchButton"><img src="admin_img/search.png" alt=""></button>
+                </div>
+                
+
+                <div class="user">
+                    <a href="/generateCertificate" class="btn">Generate Certificate</a>
+                    
+                    <img src="admin_img/notifications.png" alt="">
+                    <div class="img-case">
+                        <img src="admin_img/user.png" alt="">
+                        <span class="username"></span>
+                        <div class="dropdown-content">
+                            <a href="/logout">Logout</a>
+                            <a href="#">Settings</a>
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            
+            
+            <div class="cards">
+                <div class="card">
+                    <div class="box">
+                        <a href="#" class="btn" onclick="showUploadForm()">Upload Certificate</a>
+
+                    </div>
+            </div>
+                
+                
+                    <div class="card">
+                        <div class="box">
+                            <img src="images1/default_certificate.png" alt="">                      
+                        </div>
+       
+                    </div>
+                    
+               
+                <!-- <form class="new-students" style="display: none;" id="editForm" action="/updateUser" method="post">
+                    <div class="title">
+                        <h2>EDIT USER</h2>
+                    </div>
+                    <label for="">Amount: </label>
+                    <input type="text" name="amount" id="editNewAmount" >
+                    <label for="">Fullname: </label>
+                    <input type="text" name="fullname" id="editNewFullname" placeholder="New Username">
+                    <label for="">Email: </label>
+                    <input type="text" name="email" id="editNewEmail" placeholder="New Password">
+                    <label for="">Donation Date: </label>
+                    <input type="text" name="contact_number" id="editNewContact" placeholder="+63964839384">
+                    <label>Status:</label>
+                        <input type="radio" id="confirmed" name="role" value="confirmed">
+                        <label for="confirmed">Confirmed</label>
+                        <input type="radio" id="unconfirmed" name="role" value="unconfirmed">
+                        <label for="unconfirmed">Unconfirmed</label>      
+                                         
+                    <button type="submit" id="updateBtn" onclick="confirmUpdate()" class="btn_update">Update User</button>
+                    <button type="button" onclick="cancelEdit()" class="btn_cancel">Cancel</button>
+                </form>     -->
+
+                <!-- ADD CERTFICATE --> 
+                   
+               
+               
+                <form action="/submit" method="POST" enctype="multipart/form-data" id="certificate_container" class="certificate_container" style="display: none;">
+                    <button class="close-button" onclick="cancelEdit()"wwwwwwwwwwwwwwwwwwwwwwwwwwq9775444470>X</button>
+                    <div class="title">
+                        <h2>UPLOAD BAPTISMAL CERTIFICATE HERE</h2>
+                    </div><br>
+                    <label for="first_name">First Name:</label>
+                    <input type="text" id="first_name" name="first_name" required><br><br>
+                    <label for="last_name">Last Name:</label>
+                    <input type="text" id="last_name" name="last_name" required><br><br>
+                    <!-- <label for="email">Email:</label> -->
+                    <input type="hidden" id="email" name="email" value="debugging email" required>
+                    <label for="image_data">Upload Image:</label>
+                    <input type="file" id="image_data" name="image_data" accept="image/*" required><br><br>
+                    <div class="image-preview"><br><br>
+                        <img id="preview" src="images1/default_certificate.png" alt="Image Preview">
+                    </div>
+                    <input type="submit" class="btn_upload" value="Upload">
+                </form>
+                
+                
+                  
+                  
+                <!-- <form class="new-students" style="display: none;" id="uploadForm" onsubmit="return false;">
+                    <div class="title">
+                        <h2>UPLOAD CERTIFICATE</h2>
+                    </div>
+                    <label for="image_data">Image Data:</label>
+                    <input type="file" id="image_data" name="image_data"><br><br>
+                    <button type="button" onclick="uploadCertificate()" class="btn_update">Upload Certificate</button>
+                    <button type="button" onclick="hideUploadForm()" class="btn_cancel">Cancel</button>
+                </form>  -->
+                
+            </div>
+            
+        </div>
+    </div>
+</body>
+<script>
+    function showCardByUsername() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+        const cards = document.querySelectorAll('.card');
+
+        cards.forEach(card => {
+            const fullName = card.querySelector('h3').innerText.toLowerCase();
+
+            if (fullName.includes(searchTerm)) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    document.getElementById('searchButton').addEventListener('click', showCardByUsername);
+</script>
+<script>
+    // Function to preview image before uploading
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function(){
+            var preview = document.getElementById('preview');
+            preview.src = reader.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+    document.getElementById('image_data').addEventListener('change', previewImage);
+</script>
+<script>
+
+function showEditForm() {
+    var editForm = document.getElementById("editForm");
+    editForm.style.display = "block";
+}
+
+function showUploadForm() {
+    console.log("Function triggered"); // Check if this message is logged in the console
+    var editForm = document.getElementById("certificate_container");
+    console.log("Form element found:", editForm); // Check if the form element is found
+    editForm.style.display = "block";
+    return false; // This prevents the default form submission behavior
+}
+function cancelEdit() {
+    var editForm = document.getElementById("certificate_container");
+    editForm.style.display = "none";
+ 
+    // document.removeEventListener("click", handleOutsideClick);
+}
+
+
+document.getElementById('add_certificates').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevents the default form submission behavior
+    // Your code to handle the form submission, validate data, and possibly show success/failure messages
+    // You may also want to use AJAX to submit the form data without refreshing the page
+});
+</script>
+
+<script  src="js/routes.js"></script>
+
+
+
+</html>

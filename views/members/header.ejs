@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags and CSS links -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/schedule.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <title>Schedule</title>
+
+    <!-- Embedded CSS styles -->
+    <style>
+            
+        :root {
+        --base-shade-1: #00a8fa;
+        --white-shade-1: #ffffff;
+        --white-shade-2: #d7e1f3;
+        --black-shade-1: #232323;
+        --black-shade-2: #676a8b;
+        --grad-color-1: 0, 180, 250;
+        --grad-color-2: 21, 120, 255;
+    
+        --base-font-size: 2rem;
+    
+        --heading-font-size-1: 6rem;
+        --heading-font-size-2: 4.8rem;
+        --heading-font-size-3: 3rem;
+        --heading-font-size-4: 2.4rem;
+    
+        --border-radius-1: 2rem;
+        --border-radius-2: 1rem;
+        }
+        /* ===== Google Font Import - Poppins ===== */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px;
+            height: 13%;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #333; 
+            backdrop-filter: blur(5px); 
+            box-shadow: 10px 20px 1.5rem rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            align-items: center;
+            transition: all 0.3s ease; 
+        }
+        #add-events{
+            font-size: 30px;
+        }
+        label{
+            padding: 20px;
+        }
+
+        #login {
+            background-color:  #00a8fa;
+            padding: 10px;
+            width: 150px;
+            border-radius: 12px;
+            color: #ffffff;
+        }
+        #logo-text {
+            margin-top: 20px;
+            margin-left: 10px;
+            font-family: 'Arial Black', sans-serif;
+            font-size: 48px;
+            color: #ffffff;
+            text-shadow: 0 0 3px #00a8fa,  
+            0 0 6px #00a8fa,  
+            0 0 9px #00a8fa,
+            0 0 12px #00a8fa; 
+        }
+
+        header img {
+            height: 85px;
+            width: 100px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav ul {
+            margin-top: 40px;
+            text-align: center;
+            align-items: center;
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            font-size: 30px;
+            text-decoration: none;
+            color: #333; 
+        }
+
+        nav a#logo {
+            color: #333;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul a {
+            color: #333;
+            transition: color 0.3s ease;
+        }
+
+        nav ul a:hover {
+            color: #4070f4; 
+        }
+        
+    </style>
+</head>
+<body>
+    <!-- Header section -->
+    <header class="headerMain">
+        <nav>
+            <!-- Logo and navigation links -->
+            <a href="#home" id="logo">
+                <img src="images1/logo1.png" alt="">
+                <span id="logo-text">San Roque</span>
+            </a>
+            <ul id="nav-bar">
+                <li><a href="/home#home">Home</a></li>
+                <li><a href="/home#about">About</a></li>
+                <li><a href="/home#services">Services</a></li>
+                <li><a href="/home#events">Upcoming</a></li>
+                <li><a href="/home#contact">Contacts</a></li>
+                <li><a href="/loginform" id="login">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+</body>
+</html>

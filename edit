@@ -1,0 +1,727 @@
+node server.js
+
+
+function getDonations(callback) {
+   
+  const query = "SELECT `donation_id`, `amount`, `name`, `email`, `donation_date`, `reference_number`, `confirmation_status`, `designation`, `additional_comments` FROM `donations` WHERE 1";
+  
+  connection.query(query, (err, donations) => {
+      if (err) {
+          callback(err, null);
+      } else {
+          callback(null, donations);
+      }
+  });
+}
+
+// Assume you have a database connection named "connection"
+
+// Function to retrieve a user by email
+async function getUserByEmail(email) {
+  return new Promise((resolve, reject) => {
+      const getUserQuery = 'SELECT * FROM users WHERE email = ?';
+      connection.query(getUserQuery, [email], (err, results) => {
+          if (err) {
+              reject(err);
+          } else {
+              resolve(results.length > 0 ? results[0] : null);
+          }
+      });
+  });
+}
+
+// Function to retrieve user count
+async function getUserCount() {
+  return new Promise((resolve, reject) => {
+      const countUsersQuery = 'SELECT COUNT(*) AS userCount FROM users';
+      connection.query(countUsersQuery, (err, results) => {
+          if (err) {
+              reject(err);
+          } else {
+              resolve(results[0].userCount);
+          }
+      });
+  });
+}
+
+// Function to retrieve total donation amount
+async function getTotalDonationAmount() {
+  return new Promise((resolve, reject) => {
+      const totalDonationQuery = 'SELECT SUM(amount) AS totalAmount FROM donations';
+      connection.query(totalDonationQuery, (err, results) => {
+          if (err) {
+              reject(err);
+          } else {
+              resolve(results.length > 0 ? results[0].totalAmount : 0);
+          }
+      });
+  });
+}
+
+// Function to retrieve baptismal request count
+async function getBaptismalRequestCount() {
+  return new Promise((resolve, reject) => {
+      const countBaptismalRequestsQuery = 'SELECT COUNT(*) AS baptismalRequestCount FROM baptismal_request';
+      connection.query(countBaptismalRequestsQuery, (err, results) => {
+          if (err) {
+              reject(err);
+          } else {
+              resolve(results[0].baptismalRequestCount);
+          }
+      });
+  });
+}
+
+// Function to retrieve schedule request count
+async function getScheduleRequestCount() {
+  return new Promise((resolve, reject) => {
+      const countScheduleRequestsQuery = 'SELECT COUNT(*) AS scheduleRequestCount FROM schedule_requests';
+      connection.query(countScheduleRequestsQuery, (err, results) => {
+          if (err) {
+              reject(err);
+          } else {
+              resolve(results[0].scheduleRequestCount);
+          }
+      });
+  });
+}
+
+// Function to retrieve contact messages count
+async function getContactMessagesCount() {
+  return new Promise((resolve, reject) => {
+      const countCustomerServices = 'SELECT COUNT(*) AS contactMessagesCount FROM contact_message';
+      connection.query(countCustomerServices, (err, results) => {
+          if (err) {
+              reject(err);
+          } else {
+              resolve(results[0].contactMessagesCount);
+          }
+      });
+  });
+}
+
+// Function to retrieve recent donations
+async function getRecentDonations() {
+  return new Promise((resolve, reject) => {
+      const getDonationQuery = 'SELECT `donation_id`, `amount`, `name`, `email`, `donation_date`, `reference_number`, `confirmation_status`, `designation`, `additional_comments` FROM `donations` ORDER BY `donation_date` DESC LIMIT 5';
+      connection.query(getDonationQuery, (err, results) => {
+          if (err) {
+              reject(err);
+          } else {
+              resolve(results);
+          }
+      });
+  });
+}
+
+// Function to retrieve chart data
+async function getChartData() {
+  // Your implementation for fetching chart data
+  // This function depends on how you structure and retrieve chart data
+  // Implement according to your specific use case
+  return new Promise((resolve, reject) => {
+      // Example: Placeholder implementation
+      const chartData = {
+          // Your chart data structure
+      };
+      resolve(chartData);
+  });
+}
+
+// Example usage:
+// const user = await getUserByEmail(email);
+// const userCount = await getUserCount();
+// const totalDonationAmount = await getTotalDonationAmount();
+// const baptismalRequestCount = await getBaptismalRequestCount();
+// const scheduleRequestCount = await getScheduleRequestCount();
+// const contactMessagesCount = await getContactMessagesCount();
+// const recentDonations = await getRecentDonations();
+// const dataForChart = await getChartData();
+
+// LOGIN SAN ROQUE
+app.post('/login_sanroque', async (req, res) => {
+  try {
+      const { email, password } = req.body;
+      const user = await getUserByEmail(email);
+
+      if (!user) {
+          return res.render('san_roque_login', { message: 'Login Failed' });
+      }
+
+      const passwordMatch = await bcrypt.compare(password, user.password);
+
+      if (!passwordMatch) {
+          return res.send('error');
+      }
+
+      const userCount = await getUserCount();
+      const totalDonationAmount = await getTotalDonationAmount();
+      const baptismalRequestCount = await getBaptismalRequestCount();
+      const scheduleRequestCount = await getScheduleRequestCount();
+      const contactMessagesCount = await getContactMessagesCount();
+      const recentDonations = await getRecentDonations();
+      const dataForChart = await getChartData();
+
+      req.session.userEmail = user.email;
+      const userEmail = user.email;
+
+      if (user.role === 'admin') {
+          res.render('admin/admin_dashboard', {
+              userCount,
+              userEmail,
+              data: JSON.stringify(dataForChart),
+              totalDonationAmount,
+              scheduleRequestCount,
+              contactMessagesCount,
+              baptismalRequestCount,
+              recentDonations
+          });
+      } else if (user.role === 'superadmin') {
+          res.render('super_admin/superadmin');
+      } else {
+          res.render('members/member_dashboard', {
+              userCount,
+              userEmail,
+              getUserQuery
+          });
+      }
+  } catch (error) {
+      console.error('Error during login:', error);
+      res.status(500).send('Internal Server Error');
+  }
+});
+<!-- 
+  <div class="modal fade" id="scheduleModal<%= income.id %>" tabindex="-1" role="dialog" aria-labelledby="scheduleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="scheduleModalLabel">Schedule Form</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="schedule_form_<%= income.id %>" action="/updateIncome/<%= income.id %>" method="POST" role="form" class="node-email-form">
+          <input type="hidden" name="income_id" value="<%= income.id %>">
+            <div class="form-group">
+              <label for="email">Email:</label>
+              <input type="text" id="email" name="email" value="admnwhoedit" class="form-control" readonly>
+          </div>
+          <div class="form-group">
+              <label for="source">Source:</label>
+              <input type="text" id="source" name="source" class="form-control" required>
+          </div>
+          <div class="form-group">
+              <label for="amount">Amount:</label>
+              <input type="text" id="amount" name="amount" class="form-control" required>
+          </div>
+          <div class="form-group">
+              <label for="selectedDate">Date:</label>
+              <input type="date" id="selectedDate" name="selectedDate" class="form-control" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" form="schedule_form_<%= income.id %>" class="btn btn-primary">Update Income</button>
+
+      </div>
+    </div>
+  </div>
+</div> -->
+
+html link https://p.w3layouts.com/demos/church/web/
+
+ <%- include('header.ejs') %>
+
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+    const checkUser = 'SELECT * FROM users WHERE username = ? AND password = ?';
+    connection.query(checkUser, [username, password], (err, results) => {
+        if (err || results.length === 0) {
+            res.send('Login failed. Please check your credentials.');
+            return;
+        }
+        
+        const user = results[0];
+        
+        if (user.role === 'admin') {
+            // Redirect or grant access for admin
+            // Render 'crud.ejs' for regular user
+            // res.render('crud');
+            // connection.query('SELECT * FROM users', (error, usersData) => {
+            //     if (error) {
+            //         res.send('Failed to fetch user data.');
+            //         return;
+            //     }
+            //     res.render('crud', { users: usersData });
+            // });
+            
+        } else {
+            res.send('Welcome user');
+           
+        }
+    });
+});
+
+
+
+ejs in delete
+function deleteUser(userId) {
+    fetch(`/delete/user/${userId}`, {
+        method: 'DELETE',
+    })
+    .then(response => {
+        if (response.ok) {
+            // User deleted successfully, handle UI update or reload
+            // For example, reload the table or remove the row from the table
+            location.reload(); // This reloads the page
+        } else {
+            // Handle errors
+            console.error('Error deleting user');
+        }
+    })
+    .catch(error => {
+        console.error('Error deleting user:', error);
+    });
+}
+
+
+node
+app.delete('/delete/user/:userId', (req, res) => {
+    const userId = req.params.userId;
+    
+    // Perform deletion in your database
+    const deleteQuery = 'DELETE FROM users WHERE id = ?'; // Replace with your table name
+    
+    connection.query(deleteQuery, [userId], (error, results) => {
+        if (error) {
+            console.error('Error deleting user:', error);
+            res.status(500).send('Error deleting user');
+        } else {
+            console.log('User deleted successfully');
+            res.send(`User with ID ${userId} deleted successfully`);
+        }
+    });
+});
+
+app.get('/fetch/userData', (req, res) => {
+    
+    const updatedUserData = `<table>
+                                <tbody>
+                                    <!-- Updated table rows here -->
+                                </tbody>
+                             </table>`;
+    res.send(updatedUserData);
+});
+
+
+update
+app.post('/updateUser', (req, res) => {
+    const userId = req.body.userId;
+    const newUsername = req.body.newUsername;
+    const newPassword = req.body.newPassword;
+    const newRole = req.body.newRole;
+
+    // Update user in the MySQL database
+    const updateUserQuery = `UPDATE users SET username = ?, password = ?, role = ? WHERE id = ?`;
+    connection.query(updateUserQuery, [newUsername, newPassword, newRole, userId], (err, results) => {
+        if (err) {
+            console.error('Error updating user: ', err);
+            res.status(500).send('Error updating user');
+            return;
+        }
+        console.log('User updated successfully');
+        res.send(`
+            <p>User updated successfully</p>
+            <meta http-equiv="refresh" content="2;URL='/member'">
+        `);
+    });
+});
+
+
+
+
+
+INSERT INTO `users`(`id`, `username`, `password`, `role`) VALUES ('1', 'user1', 'pass1', 'role1');
+INSERT INTO `users`(`id`, `username`, `password`, `role`) VALUES ('2', 'user2', 'pass2', 'role2');
+INSERT INTO `users`(`id`, `username`, `password`, `role`) VALUES ('3', 'user3', 'pass3', 'role3');
+INSERT INTO `users`(`id`, `username`, `password`, `role`) VALUES ('4', 'user4', 'pass4', 'role4');
+INSERT INTO `users`(`id`, `username`, `password`, `role`) VALUES ('5', 'user5', 'pass5', 'role5');
+INSERT INTO `users`(`id`, `username`, `password`, `role`) VALUES ('6', 'user6', 'pass6', 'role6');
+INSERT INTO `users`(`id`, `username`, `password`, `role`) VALUES ('7', 'user7', 'pass7', 'role7');
+INSERT INTO `users`(`id`, `username`, `password`, `role`) VALUES ('8', 'user8', 'pass8', 'role8');
+INSERT INTO `users`(`id`, `username`, `password`, `role`) VALUES ('9', 'user9', 'pass9', 'role9');
+INSERT INTO `users`(`id`, `username`, `password`, `role`) VALUES ('10', 'user10', 'pass10', 'role10');
+
+
+
+
+
+
+SCHEDULE MANAGEMENT ADMIN
+<table id="requestsTable">
+<tr>
+  <th>ID</th>
+  <th>Full Name</th>
+  <th>Email</th>
+  <th>Phone</th>
+  <th>Preferred Date</th>
+  <th>Preferred Time</th>
+  <th>Request Type</th>
+  <th>Status</th>
+  <th>Additional Info</th>
+  <th>Message</th>
+  <th>Actions</th>
+</tr>
+<tbody id="tableBody">
+  <% schedulerequests.forEach(function(request) { %>
+    <tr onclick="editRequest('<%= request.id %>')">
+      <td><%= request.id %></td>
+      <td><%= request.fullName %></td>
+      <td><%= request.email %></td>
+      <td><%= request.phone %></td>
+      <td><%= request.preferredDate %></td>
+      <td><%= request.preferredTime %></td>
+      <td><%= request.requestType %></td>
+      <td><%= request.status %></td>
+      <td><%= request.additionalInfo %></td>
+      <td><%= request.message %></td>
+      <td>
+        <a href="#" id="editBtn">Edit</a> |
+        <a href="#" onclick="deleteRequest('<%= request.id %>')" id="deleteBtn">Delete</a>
+      </td>
+    </tr>
+  <% }); %>
+</tbody>
+</table>
+
+
+
+
+<section id="scheduleRequest">
+<h2>Schedule Request</h2>
+<form id="scheduleRequestForm" action="/submitForm" method="POST">
+  <label for="fullName">Full Name:</label>
+  <input type="text" id="fullName" name="fullName" required><br><br>
+
+  <label for="email">Email:</label>
+  <input type="email" id="email" name="email" required><br><br>
+
+  <label for="phone">Phone Number:</label>
+  <input type="tel" id="phone" name="phone"><br><br>
+
+  <label for="preferredDate">Preferred Date:</label>
+  <input type="date" id="preferredDate" name="preferredDate" required><br><br>
+
+  <label for="preferredTime">Preferred Time:</label>
+  <input type="time" id="preferredTime" name="preferredTime" required><br><br>
+
+  <label for="requestType">Request Type:</label>
+  <select id="requestType" name="requestType">
+    <option value="meeting">Meeting</option>
+    <option value="service">Service</option>
+    <option value="other">Other</option>
+    <!-- Add more request types -->
+  </select><br><br>
+
+  <label for="additionalInfo">Additional Information:</label><br>
+  <textarea id="additionalInfo" name="additionalInfo" rows="4" cols="30"></textarea><br><br>
+
+  <input type="submit" value="Submit Request">
+</form>
+</section>
+
+
+
+
+<label for="fullName">Full Name:</label>
+    <input type="text" id="fullName" name="fullName" required><br><br>
+  
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required><br><br>
+  
+    <label for="phone">Phone Number:</label>
+    <input type="tel" id="phone" name="phone"><br><br>
+  
+    <label for="preferredDate">Preferred Date:</label>
+    <input type="date" id="preferredDate" name="preferredDate" required><br><br>
+  
+    <label for="preferredTime">Preferred Time:</label>
+    <input type="time" id="preferredTime" name="preferredTime" required><br><br>
+  
+    <label for="requestType">Request Type:</label>
+    <select id="requestType" name="requestType">
+      <option value="meeting">Meeting</option>
+      <option value="service">Service</option>
+      <option value="other">Other</option>
+      <!-- Add more request types -->
+    </select><br><br>
+  
+    <label for="additionalInfo">Additional Information:</label><br>
+    <textarea id="additionalInfo" name="additionalInfo" rows="4" cols="30"></textarea><br><br>
+  
+    <input type="submit" value="Submit Request"></input>
+
+
+
+
+
+
+            <!DOCTYPE html>
+<html>
+<head>
+<title>Certificate of Baptism</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5; /* Light background for visual appeal */
+}
+
+.container {
+  width: 800px;
+  margin: 0 auto;
+  padding: 200px;
+  /* background-image: url('images1/33.webp'); */
+  background-size: contain; /* Fit the entire image within the container */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.header h1 {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.header p {
+  font-size: 18px;
+}
+
+.certificate-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.certificate-info p {
+  font-size: 16px;
+  line-height: 1.5; /* Increased line height for better readability */
+}
+
+.image-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.image-container img {
+  width: 200px; /* Adjust image size as needed */
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.signature {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.signature p {
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.signature hr {
+  width: 200px;
+  border: 1px solid black;
+  margin-bottom: 15px;
+}
+
+@media print{
+  body * {
+    display:none;
+  }
+  #certificateContainer, #certificateContainer * {
+    display: block;
+  }
+}
+</style>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+</head>
+<body>
+  <form id="certificateForm">
+    <label for="baptizedName">Baptized:</label>
+    <input type="text" id="baptizedName" name="baptizedName"><br><br>
+    
+    <label for="baptizedOn">Baptized On:</label>
+    <input type="text" id="baptizedOn" name="baptizedOn"><br><br>
+    
+    <label for="parents">Parents:</label>
+    <input type="text" id="parents" name="parents"><br><br>
+    
+    <label for="minister">Minister:</label>
+    <input type="text" id="minister" name="minister"><br><br>
+    
+    <input type="submit" value="Generate Certificate">
+  </form>
+  
+  
+  <div class="container" id="certificateContainer" style="display: none; background-image: url('images1/33.webp');">
+    <div class="header">
+      <h1>Full Certificate of Baptism</h1>
+      <p>Baptism Registry</p>
+    </div>
+
+    <div class="image-container">
+      <img src="images1/33.webp" alt="Baptism Image">
+    </div>
+
+    <div class="certificate-info">
+      <p><strong>Baptized:</strong> Jane Doe</p>
+      <p><strong>Baptized On:</strong> August 22, 2022</p>
+    </div>
+
+    <div class="certificate-info">
+      <p><strong>Parents:</strong> John and Jane Doe</p>
+      <p><strong>Minister:</strong> Rev. Richard Roe</p>
+    </div>
+
+    <div class="signature">
+      <hr>
+      <p>Church of Christian Fellowship</p>
+    </div>
+</div>
+
+<input type="button" value="Print Div" onclick="PrintDiv('myDiv')" />
+
+<div class="buttons">
+  <button id="printCertificate">Print Certificate</button>
+  <button onclick="downloadCertificate()">Download Certificate</button>
+</div>
+</body>
+
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script>
+  
+  document.getElementById('certificateForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent form submission
+
+    // Get values from the form
+    const baptizedName = document.getElementById('baptizedName').value;
+    const baptizedOn = document.getElementById('baptizedOn').value;
+    const parents = document.getElementById('parents').value;
+    const minister = document.getElementById('minister').value;
+
+    // Create the certificate HTML
+    const certificateHTML = `
+      <div class="header">
+        <h1>Full Certificate of Baptism</h1>
+        <p>Baptism Registry</p>
+      </div>
+
+      <div class="image-container">
+        <img src="path/to/baptism-image.jpg" alt="Baptism Image">
+      </div>
+
+      <div class="certificate-info">
+        <p><strong>Baptized:</strong> ${baptizedName}</p>
+        <p><strong>Baptized On:</strong> ${baptizedOn}</p>
+      </div>
+
+      <div class="certificate-info">
+        <p><strong>Parents:</strong> ${parents}</p>
+        <p><strong>Minister:</strong> ${minister}</p>
+      </div>
+
+      <div class="signature">
+        <hr>
+        <p>Church of Christian Fellowship</p>
+      </div>
+    `;
+
+    // Update the certificate container with the generated HTML and display it
+    const certificateContainer = document.getElementById('certificateContainer');
+    certificateContainer.innerHTML = certificateHTML;
+    certificateContainer.style.display = 'block';
+  });
+  
+
+  const printCertificate = document.getElementById('printCertificate');
+     
+    printCertificate.addEventListener('click', function(){
+      print();
+    })
+
+   
+
+    function downloadCertificate() {
+      function downloadCertificate() {
+      const certificateContainer = document.getElementById('certificateContainer').cloneNode(true);
+
+      const container = document.createElement('div');
+      container.classList.add('container');
+      container.appendChild(certificateContainer);
+
+      const htmlContent = `
+        <html>
+        <head>
+          <title>Certificate</title>
+          <style>
+            /* Add your CSS styles here */
+          </style>
+        </head>
+        <body>
+          ${container.outerHTML}
+        </body>
+        </html>
+      `;
+
+      const encodedHtml = encodeURIComponent(htmlContent);
+      const dataUri = 'data:text/html;charset=utf-8,' + encodedHtml;
+
+      const a = document.createElement('a');
+      a.href = dataUri;
+      a.download = 'certificate.html';
+      a.click();
+    }
+
+    }
+</script>
+</html>
+
+
+
+<form class="new-students" style="display: none;" id="editForm" action="" method="post">
+                    <div class="title">
+                        <h2>EDIT USER</h2>
+                    </div>
+                    <label for="">First Name: </label>
+                    <input type="text" name="firstname" id="editNewAmount" placeholder="Fisrt name">
+                    <label for="">Last Name: </label>
+                    <input type="text" name="lastname" id="editNewFullname" placeholder="Last name">
+                    <label for="">Payment: </label>
+                    <input type="text" name="email" id="editNewEmail" placeholder="New Password">
+                    <label for="">Reference Code: </label>
+                    <input type="text" name="email" id="editNewEmail" placeholder="New Password">
+                    <!-- <label for="">Donation Date: </label>
+                    <input type="text" name="contact_number" id="editNewContact" placeholder="+63964839384">
+                    <label>Status:</label>
+                        <input type="radio" id="confirmed" name="role" value="confirmed">
+                        <label for="confirmed">Confirmed</label>
+                        <input type="radio" id="unconfirmed" name="role" value="unconfirmed">
+                        <label for="unconfirmed">Unconfirmed</label>       -->
+                                         
+                    <button type="submit" id="updateBtn" onclick="confirmUpdate()" class="btn_update">Update User</button>
+                    <button type="button" onclick="cancelEdit()" class="btn_cancel">Cancel</button>
+                </form> 
+
+    image link
+    https://www.bing.com/images/search?view=detailV2&ccid=PlXUZkAt&id=2D11C1AA8275482AC1728740488CD9ADB9B5FEEE&thid=OIP.PlXUZkAtGAgheU6drTrepAAAAA&mediaurl=https%3a%2f%2fi1.wp.com%2fwebsiteghana.com%2fwp-content%2fuploads%2f2017%2f03%2fpastor.gif%3fresize%3d300%252C300%26ssl%3d1&exph=300&expw=300&q=pastor+picture+gif+animated&simid=608044168563462642&FORM=IRPRST&ck=304F534760E3383C2FD54DA1E7B5A4F4&selectedIndex=56&itb=0&ajaxhist=0&ajaxserp=0

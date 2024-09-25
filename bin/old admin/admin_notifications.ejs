@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/admin_notifications.css">
+    <title>Notification</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+</head>
+
+<body>
+    <div class="side-menu">
+        <div class="brand-name">
+            <h1> San Roque</h1>
+        </div>
+        <ul>
+            <li id="document" onclick="navigateTo('/document')">
+                <img src="admin_img/reading-book (1).png" alt="">&nbsp;<span>Document</span>
+            </li>
+            <li id="giving"  onclick="navigateTo('/toGiving')">
+                <img src="admin_img/reading-book (1).png" alt="">&nbsp;<span>Giving/Tithes</span>
+            </li>
+            <li id="schedule" onclick="navigateTo('/toAdminSchedule')">
+                <img src="admin_img/teacher2.png" alt="">&nbsp;<span>Schedules</span>
+            </li>
+            <li id="events" onclick="navigateTo('/toEvents')">
+                <img src="admin_img/school.png" alt="">&nbsp;<span>Events</span>
+            </li>
+            <li id="notifications" class="active_menu" onclick="navigateTo('/toNotifications')">
+                <img src="admin_img/payment.png" alt="">&nbsp;<span>Notification</span>
+            </li>
+            <li id="help" onclick="navigateTo('/toHelp')">
+                <img src="admin_img/help-web-button.png" alt="">&nbsp;<span>Help</span>
+            </li>
+            <li id="settings" onclick="navigateTo('/toSettings')">
+                <img src="admin_img/settings.png" alt="">&nbsp;<span>Settings</span>
+            </li>
+            <li id="settings" onclick="confirmLogout()">
+                <img src="admin_img/settings.png" alt="">&nbsp;<span>Logout</span>
+            </li>
+        </ul>
+    </div>
+    <div class="container">
+        <div class="header">
+            <div class="nav">
+                <div class="search">
+                    <input type="text" placeholder="Search..">
+                    <button type="submit"><img src="admin_img/search.png" alt=""></button>
+                </div>
+                <div class="user">
+                    <a href="#" class="btn">Add New</a>
+                    <img src="admin_img/notifications.png" alt="">
+                    <div class="img-case">
+                        <a href=""><img src="admin_img/user.png" alt=""><h1 class="username">EMAIL: <%= userEmail %></h1></a>
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="cards">
+               
+            </div><br><br>
+            <div class="content-2">
+                <div class="recent-payments">
+                    <div class="title">
+                        <h2>Notifications</h2>
+                        <!-- <a href="#" class="btn">View All</a> -->
+                        
+                    </div>
+                    <main>
+                        <ul id="notification-list">
+                            <% donations.forEach(function(donation) { %>
+                                <li class="notification-item">
+                                    
+                                    <p class="notification-content">
+                                        You received a donation of <%= donation.amount %> from <%= donation.name %> with reference number ( <%= donation.reference_number %> ).
+                                        <button class="check-button" onclick="confirmDonation('<%= donation.donation_id %>')"><i class="fa fa-check" aria-hidden="true"></i></button>
+                                        <button class="x-button"><i class="fa fa-times" aria-hidden="true"></i></button>
+                                    </p>
+                                    <span class="notification-time"><%= donation.donation_date %></span>
+                                </li>
+                            <% }); %>
+                            
+                            <li class="notification-item">
+                                <p class="notification-content">Tomorrow is the church picnic. Don't forget to bring food.</p>
+                                <span class="notification-time">Yesterday</span>
+                            </li>
+                            <!-- Add more notification items here -->
+                        </ul>
+                    </main>
+                
+            
+                </div>
+               
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script  src="js/routes.js"></script>
+<script>
+    function confirmDonation(donationId) {
+    const confirmation = confirm('Are you sure you want to confirm this donation?');
+    
+    if (confirmation) {
+        fetch(`/confirmDonation/${donationId}`, {
+            method: 'PUT', // Assuming you use PUT for update, adjust method if needed
+        })
+        .then(response => {
+            if (response.ok) {
+                // Update the UI or perform any necessary actions upon successful update
+                console.log('Donation confirmed!');
+            } else {
+                console.error('Failed to confirm donation');
+            }
+        })
+        .catch(error => {
+            console.error('Error confirming donation:', error);
+        });
+    } else {
+        console.log('Donation confirmation cancelled.');
+    }
+}
+
+</script>
+<style>
+  .notification-content {
+    /* Ensure space between text and buttons */
+    position: relative;
+}
+
+.check-button,
+.x-button {
+    /* Adjust button styles */
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    position: absolute;
+    top: 0;
+}
+
+.check-button {
+    /* Position the check button on the right side */
+    right: 50px; /* Adjust the distance from the right */
+    color: green; /* Change color for the check button */
+}
+
+.x-button {
+    /* Position the x button on the right side */
+    right: 0;
+    color: red; /* Change color for the x button */
+}
+
+
+
+</style>
+
+
+
+</html>

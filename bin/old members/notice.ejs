@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Your Page Title</title>
+  <style>
+    /* Style for the container holding the image and text */
+    .error-container {
+      display: flex;
+      align-items: center;
+      width: 80%; /* Adjust the width of the container */
+      margin: 20px auto;
+    }
+
+    .error-message {
+      padding: 20px;
+      background-color:  #e68e99;
+      color: white; /* Darker text for better contrast */
+      border-radius: 15px;
+      font-family: Arial, sans-serif;
+      font-size: 56px;
+      text-align: center;
+      flex-grow: 1; /* Allows the text to expand and fill the space */
+      margin-left: 20px; /* Add some space between the image and text */
+    }
+
+    .error-message p {
+      margin: 0; /* Remove default paragraph margins */
+    }
+
+    .error-message img {
+      bottom: 90%;
+      height: 100px; /* Adjust the height as needed */
+      width: 100px; /* Adjust the width as needed */
+      border-radius: 50%; /* Round the corners for an icon-like appearance */
+    }
+  </style>
+</head>
+<body>
+    <div>
+    <img src="images1/error.svg" alt="People Standing">
+</div>
+    <div class="error-container">
+    <div class="error-message">
+      <p>Email already taken. Please choose a different email.</p>
+    </div>
+  </div>
+</body>
+<script>
+    setTimeout(function() {
+        window.location.href = '/loginform'; 
+    }, 3000);
+</script>
+
+</html>

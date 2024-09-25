@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" href="/css/schedule.css">
+     
+    <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+   <title>Schedule</title>
+</head>
+<body>
+  <header class="headerMain">
+    <nav>
+        <a href="#home" id="logo"><img src="images1/logo1.png" alt=""><span id="logo-text">San Roque</span></a>
+        <ul id="nav-bar">
+            <li><a href="/home#home">Home</a></li>
+            <li><a href="/home#about">About</a></li>
+            <li><a href="/home#services">Services</a></li>
+            <li><a href="/home#events">Upcoming</a></li>
+            <li><a href="/home#contact">Contacts</a></li>
+            <li><a href="/loginform" id="login">Login</a></li>
+        </ul>
+    </nav>
+</header>
+
+
+    <div class="container">
+        <header id="add-events">Add Events</header> 
+        <button class="closeBtn">
+          X
+        </button>
+
+        <form id="scheduleRequestForm" action="/submitForm" method="POST">
+            <div class="form first">
+                <div class="details personal">
+                    <span class="title">Your Concern And Contacts</span>
+
+                    <div class="fields">
+                        <div class="input-field">
+                          <label for="fullName">Full Name:</label>
+                          <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
+                        </div>
+
+                        <div class="input-field">
+                          <label for="phone">Email:</label>
+                          <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                        </div>
+                            
+                        <div class="input-field">
+                          <label for="phone">Phone Number:</label>
+                           <input type="tel" id="phone" name="phone" placeholder="+635575563653">
+                        </div>
+
+                        <div class="input-field">
+                          <label for="preferredDate">Preferred Date:</label>
+                          <input type="date" id="preferredDate" name="preferredDate" required>
+                        </div>
+
+                        <div class="input-field">
+                          <label for="preferredTime">Preferred Time:</label>
+                          <input type="time" id="preferredTime" name="preferredTime" required>
+                        </div>
+
+                        <div class="input-field">
+                          <label for="requestType">Request Type:</label>
+                          <select id="requestType" name="requestType">
+                            <option value="meeting">Meeting</option>
+                            <option value="service">Service</option>
+                            <option value="other">Other</option>
+                     
+                          </select>
+                        </div>
+
+                        
+                    </div>
+                </div>
+
+                <div class="details ID">
+                    <span class="title">Identity Details</span>
+
+                    <div class="fields">
+
+                        <div class="input-field">
+                            <label>Description :</label>
+                            <textarea id="additionalInfo" name="additionalInfo" placeholder="Please describe the purpose or details of your schedule request (e.g., meeting topic, service type, etc.)" required></textarea><br><br>
+                        </div>
+
+                    </div>
+
+                    <button class="nextBtn">
+                        <span class="btnText">Submit</span>
+                        <!-- <i class="uil uil-navigator"></i> -->
+                    </button>
+                
+                </div> 
+                <div id="successMessage" style="display: none;">
+                  <p>Form data submitted successfully!</p>
+                  <div id="loadingSpinner" style="display: none;">Loading...</div>
+                </div>
+
+                
+                
+            
+                
+
+            </div>
+           
+
+        </form>
+    </div>
+</body>
+
+
+
+
+<script>
+ document.querySelector('.nextBtn').addEventListener('click', function() {
+  var button = this;
+  var buttonText = this.querySelector('.btnText');
+  var loadingSpinner = document.getElementById('loadingSpinner');
+
+  buttonText.textContent = '';
+  button.classList.add('loading');
+  loadingSpinner.style.display = 'block'; // Show the spinner
+
+  setTimeout(function() {
+    buttonText.textContent = 'Submit';
+    button.classList.remove('loading');
+    loadingSpinner.style.display = 'none'; // Hide the spinner
+
+    alert('Submitted successfully');
+    window.location.reload();
+  }, 2000);
+});
+
+</script>
+<style>
+ 
+ 
+</style>
+
+
+</html>
